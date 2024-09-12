@@ -66,7 +66,7 @@ Please also find a definition of the variables used in this template below (see:
 Режиссер: "[[{{director}}]]"
 Продолжительность: {{movieLength}}
 Статус: В бэклоге
-Рейтинг: {{raitingKp}}
+Рейтинг: {{ratingKp}}
 Оценка:
 Дата просмотра:
 coverUrl: {{posterUrl}}
