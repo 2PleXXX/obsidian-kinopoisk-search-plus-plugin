@@ -66,6 +66,7 @@ Please also find a definition of the variables used in this template below (see:
 Режиссер: "[[{{director}}]]"
 Продолжительность: {{movieLength}}
 Статус: В бэклоге
+Рейтинг: {{raitingKp}}
 Оценка:
 Дата просмотра:
 coverUrl: {{posterUrl}}
@@ -106,6 +107,11 @@ Please find here a definition of the possible variables to be used in your templ
 | seriesInSeasonCount | The average count of episodes in tv-show season                |
 | seriesLength        | The average length of the tv-show episode in minutes           |
 | isComplete          | Completed tv-show or not (Can be true or false)                |
+| ratingKp            | User raiting on KinoPoisk                                      |
+| ratingImdb          | User raiting on IMDB                                           |
+| imdbId              | Movie/tv-show ID on IMDB                                       |
+| tmdbId              | Movie/tv-show ID on TMDB                                       |
+| kpHDId              | Movie/tv-show ID on KinoPoisk HD                               |
 
 If you want that countries and genres will be not just strings but list of items, you need put it in properties (YAML) like this: `[{{genres}}]`
 

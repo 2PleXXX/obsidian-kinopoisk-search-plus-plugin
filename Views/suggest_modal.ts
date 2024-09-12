@@ -40,7 +40,9 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 			attr: { style: "display: flex; align-items: center;" },
 		});
 		container.appendChild(
-			el.createEl("img", { attr: { src: item.poster ?? "", width: 100 } })
+			el.createEl("img", {
+				attr: { src: item.poster?.url ?? "", width: 100 },
+			})
 		);
 		container.appendChild(textInfo);
 	}
