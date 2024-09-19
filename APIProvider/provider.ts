@@ -90,7 +90,13 @@ function createMovieShowFrom(fullInfo: KinopoiskFullInfo): MoviewShow {
 		genres: fullInfo.genres
 			.map((genre) => capitalizeFirstLetter(genre.name))
 			.join(", "),
+		genresLinks: fullInfo.genres
+			.map((genre) => `"[[${capitalizeFirstLetter(genre.name)}]]"`)
+			.join(", "),
 		countries: fullInfo.countries.map((country) => country.name).join(", "),
+		countriesLinks: fullInfo.countries
+			.map((country) => `"[[${country.name}]]"`)
+			.join(", "),
 		director:
 			fullInfo.persons.find(
 				(person) => person.enProfession === "director"

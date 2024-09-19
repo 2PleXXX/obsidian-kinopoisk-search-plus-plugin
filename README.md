@@ -96,7 +96,9 @@ Please find here a definition of the possible variables to be used in your templ
 | name                | The title of the movie/tv-show.                                |
 | year                | The year when movie/tv-show was made                           |
 | countries           | The countries had involved with this movie/tv-show development |
+| countriesLinks      | The countries list embeded in Obsidian link `[[]]`             |
 | genres              | Genres of this movie/tv-show                                   |
+| genresLinks         | Genres of this movie/tv-show embeded in Obsidian link `[[]]`   |
 | director            | The name of the movie director.                                |
 | movieLength         | The length of the movie in minutes                             |
 | posterUrl           | Movie/tv-show poster image URL.                                |
@@ -114,6 +116,7 @@ Please find here a definition of the possible variables to be used in your templ
 | kpHDId              | Movie/tv-show ID on KinoPoisk HD                               |
 
 If you want that countries and genres will be not just strings but list of items, you need put it in properties (YAML) like this: `[{{genres}}]`
+To present **countriesLinks** and **genresLinks** variables as string no need to put them in quotation marks (only use `{{countriesLinks}}` or `[{{countriesLinks}}]`).
 
 ## License
 

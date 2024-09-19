@@ -6,7 +6,9 @@ export interface MoviewShow {
 	description: string;
 	posterUrl: string;
 	genres: string;
+	genresLinks: string;
 	countries: string;
+	countriesLinks: string;
 	director: string;
 	movieLength: number;
 	coverUrl: string;
