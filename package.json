@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-kinopoisk-search-plus-plugin",
-	"version": "0.5.1",
+	"version": "0.0.1",
 	"description": "Helps you find movies and tv shows via Kinopoisk and create notes.",
 	"main": "main.js",
 	"scripts": {
@@ -10,11 +10,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin.git"
+		"url": "https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin.git"
 	},
-	"homepage": "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin#readme",
+	"homepage": "https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin#readme",
 	"bugs": {
-		"url": "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin/issues"
+		"url": "https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/issues"
 	},
 	"keywords": [
 		"obsidian",

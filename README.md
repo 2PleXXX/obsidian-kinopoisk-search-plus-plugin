@@ -34,7 +34,7 @@ Uses the Kinopoisk.dev API to retrieve comprehensive film and series data.
 
 **Option 1:** Search for "Kinopoisk Search Plus" in the Obsidian Community plugins _(coming soon to Community Plugins)_
 
-**Option 2:** Manual installation - download the latest release files (`main.js`, `manifest.json`, `styles.css`) from [Releases](https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin/releases) and place them in your vault's `.obsidian/plugins/kinopoisk-search-plus/` folder.
+**Option 2:** Manual installation - download the latest release files (`main.js`, `manifest.json`, `styles.css`) from [Releases](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases) and place them in your vault's `.obsidian/plugins/kinopoisk-search-plus/` folder.
 
 ---
 
@@ -404,14 +404,14 @@ You can download the example vault from the repository and open it locally. The 
 **Option 1:** Clone the repository and open the `Example Vault` folder as an Obsidian vault  
 **Option 2:** Download the vault archive directly
 
--   [Clone Repository](https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin)
--   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin/releases/download/v0.5.1/Example.Vault.rar)
+-   [Clone Repository](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin)
+-   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v0.5.1/Example.Vault.rar)
 
 ---
 
 # License
 
-[Obsidian Kinopoisk Plus Plugin](https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin) is licensed under the GNU AGPLv3 license. Refer to [LICENSE](https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin/blob/main/LICENSE) for more information.
+[Obsidian Kinopoisk Plus Plugin](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin) is licensed under the GNU AGPLv3 license. Refer to [LICENSE](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/blob/main/LICENSE) for more information.
 
 ---
 
