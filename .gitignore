@@ -15,6 +15,9 @@ package-lock.json
 .DS_Store
 Thumbs.db
 
+# Archives
+*.rar
+
 # Obsidian user data
 data.json
 
