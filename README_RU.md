@@ -18,7 +18,7 @@
 
 ---
 
-# Obsidian Kinopoisk Plugin Plus
+# Obsidian Kinopoisk Search Plus Plugin
 
 Легко ищите информацию о фильмах и сериалах через Кинопоиск и создавайте заметки.
 

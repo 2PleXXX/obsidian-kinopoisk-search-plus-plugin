@@ -18,7 +18,7 @@ Key differences between the [original plugin](https://github.com/Alintor/obsidia
 
 ---
 
-# Obsidian Kinopoisk Plugin Plus
+# Obsidian Kinopoisk Search Plus Plugin
 
 Easily search movies and TV shows info via Kinopoisk and create notes.
 
