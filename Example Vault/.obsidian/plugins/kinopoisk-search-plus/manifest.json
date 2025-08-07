@@ -1,0 +1,10 @@
+{
+	"id": "kinopoisk-search-plus",
+	"name": "Kinopoisk search Plus",
+	"version": "0.5.1",
+	"minAppVersion": "1.0.0",
+	"description": "Helps you find movies and tv shows via Kinopoisk and create notes.",
+	"author": "2PleXXX",
+	"authorUrl": "https://github.com/2PleXXX",
+	"isDesktopOnly": false
+}

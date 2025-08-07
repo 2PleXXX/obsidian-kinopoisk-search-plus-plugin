@@ -1,0 +1,213 @@
+{
+  "main": {
+    "id": "6acae0cc6f5d6f39",
+    "type": "split",
+    "children": [
+      {
+        "id": "09bd3831ebe1c8dc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4be66b110c73b74e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "1be4e9f3519fe045",
+    "type": "split",
+    "children": [
+      {
+        "id": "4d738bef986df751",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "543bc1d384495bb8",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "b4aefbe6ae33016a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "4874d30eceeb9ee0",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "0cbce2c6b0f5f727",
+    "type": "split",
+    "children": [
+      {
+        "id": "d97e784377deb9ec",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d52fbc5e1f45962f",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки"
+            }
+          },
+          {
+            "id": "cf1c98c6819cc925",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки"
+            }
+          },
+          {
+            "id": "da93d706d1add279",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "526bc593140a6b0d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "kinopoisk-search-plus:Search in Kinopoisk": false
+    }
+  },
+  "active": "543bc1d384495bb8",
+  "lastOpenFiles": [
+    "02 Downloaded images/Луна 2112_2009_poster.jpg",
+    "Структура.md",
+    "01 All movies/Луна 2112 (Копия[1]).md",
+    "02 Downloaded images/Луна 2112_2009_poster_3.jpg",
+    "02 Downloaded images/Луна 2112_2009_poster_2.jpg",
+    "Луна 2112.md",
+    "02 Downloaded images/Луна 2112_2009_poster_1.jpg",
+    "testMovies/Луна 2112.md",
+    "Images/Луна 2112_2009_logo_1.png",
+    "Images/Луна 2112_2009_cover_1.jpg",
+    "Images/Луна 2112_2009_poster_1.jpg",
+    "Images/Луна 2112_2009_logo.png",
+    "Images/Луна 2112_2009_cover.jpg",
+    "Images/Луна 2112_2009_poster.jpg",
+    "Images",
+    "testMovies",
+    "23",
+    "2",
+    "01",
+    "0",
+    "tests",
+    "test",
+    "tes",
+    "te",
+    "01 All movies/Интерстеллар (Копия[1]).md",
+    "01 All movies/Во все тяжкие (Копия[1]).md",
+    "Предложенные улучшения/Валидация данных.md",
+    "Предложенные улучшения/Прогресс-бар.md",
+    "Проблемы.md",
+    "01 All movies/Луна 2112 (Копия[2]).md",
+    "03 Templates/02 Template with all variables.md",
+    "01 All movies/Аркейн (Копия[1]).md",
+    "01 All movies/Луна 2112.md",
+    "01 All movies/Игра престолов.md",
+    "Предложенные улучшения/00 Предложенные улучшения.md",
+    "Все API.md",
+    "Предложенные улучшения/Обработка ошибок.md",
+    "Предложенные улучшения/Кэширование.md",
+    "01 All movies/Истинная грусть (1998).md",
+    "01 All movies/Аркейн (2021).md",
+    "00 Руководство/00 Доступные переменные.md",
+    "00 Руководство/01 Варианты для названия файлов.md",
+    "Текущие проблемы.md",
+    "Что нужно изменить.md",
+    "README.md"
+  ]
+}

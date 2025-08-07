@@ -1,0 +1,630 @@
+/* ===== МОДАЛЬНОЕ ОКНО ПОИСКА (SearchModal) ===== */
+
+/* Контейнер для поля ввода в модальном окне поиска */
+.kinopoisk-plugin__search-modal--input {
+	padding-bottom: 1.5rem;
+}
+
+/* Поле ввода в модальном окне поиска */
+.kinopoisk-plugin__search-modal--input input {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 2px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background: var(--background-primary);
+	color: var(--text-normal);
+	font-size: 1rem;
+	transition: all 0.2s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.kinopoisk-plugin__search-modal--input input:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 3px rgba(var(--interactive-accent-rgb), 0.2);
+	transform: translateY(-1px);
+}
+
+.kinopoisk-plugin__search-modal--input input::placeholder {
+	color: var(--text-muted);
+	opacity: 0.7;
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО ВЫБОРА ФИЛЬМА (SuggestModal) ===== */
+
+/* Контейнер для элемента списка фильмов (флекс-контейнер) */
+.kinopoisk-plugin__suggest-item {
+	display: flex;
+	align-items: center;
+	padding: 1rem;
+	margin-bottom: 0.5rem;
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.kinopoisk-plugin__suggest-item:hover {
+	background: var(--background-modifier-hover);
+	border-color: var(--interactive-accent);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Постер фильма в списке предложений */
+.kinopoisk-plugin__suggest-poster {
+	width: 80px;
+	height: auto;
+	border-radius: 6px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	transition: transform 0.2s ease;
+}
+
+.kinopoisk-plugin__suggest-item:hover .kinopoisk-plugin__suggest-poster {
+	transform: scale(1.02);
+}
+
+/* Заглушка для постера, когда изображение недоступно */
+.kinopoisk-plugin__suggest-poster-placeholder {
+	width: 80px;
+	height: 120px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(
+		135deg,
+		var(--background-secondary),
+		var(--background-modifier-border)
+	);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	font-size: 24px;
+	color: var(--text-muted);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Текстовая информация о фильме (название, год, тип) */
+.kinopoisk-plugin__suggest-text-info {
+	padding-left: 1rem;
+	flex: 1;
+	min-width: 0;
+}
+
+.kinopoisk-plugin__suggest-text-info div:first-child {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--text-normal);
+	line-height: 1.3;
+	margin-bottom: 0.25rem;
+	word-break: break-word;
+}
+
+.kinopoisk-plugin__suggest-text-info small {
+	color: var(--text-muted);
+	font-size: 0.9rem;
+	line-height: 1.4;
+	display: block;
+	word-break: break-word;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+
+/* Мобильные устройства */
+@media (max-width: 480px) {
+	.kinopoisk-plugin__search-modal--input input {
+		padding: 0.65rem 0.85rem;
+		font-size: 16px; /* Предотвращает зум на iOS */
+	}
+
+	.kinopoisk-plugin__suggest-item {
+		padding: 0.75rem;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.kinopoisk-plugin__suggest-poster,
+	.kinopoisk-plugin__suggest-poster-placeholder {
+		width: 70px;
+		height: auto;
+	}
+
+	.kinopoisk-plugin__suggest-poster-placeholder {
+		height: 105px;
+	}
+
+	.kinopoisk-plugin__suggest-text-info {
+		padding-left: 0;
+		padding-top: 0.75rem;
+		text-align: center;
+	}
+}
+
+/* Отключение анимаций для пользователей с соответствующими настройками */
+@media (prefers-reduced-motion: reduce) {
+	.kinopoisk-plugin__search-modal--input input,
+	.kinopoisk-plugin__suggest-item,
+	.kinopoisk-plugin__suggest-poster {
+		transition: none;
+	}
+}
+
+/* ===== НАСТРОЙКИ ПЛАГИНА (Settings) ===== */
+
+/* Основной контейнер настроек */
+.obsidian-kinopoisk-plugin__settings {
+	width: 100%;
+	max-width: none;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+/* Общие стили для секций настроек */
+.obsidian-kinopoisk-plugin__settings .setting-item {
+	position: relative;
+	padding: 20px 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+	transition: background-color 0.2s ease;
+}
+
+.obsidian-kinopoisk-plugin__settings .setting-item:last-child {
+	border-bottom: none;
+}
+
+/* Заголовки секций - БЕЗ смещения при ховере */
+.obsidian-kinopoisk-plugin__settings .setting-item.mod-heading {
+	margin-top: 32px;
+	margin-bottom: 16px;
+	padding: 16px 0;
+	border-bottom: 2px solid var(--interactive-accent);
+	background-color: transparent;
+}
+
+.obsidian-kinopoisk-plugin__settings .setting-item.mod-heading:first-child {
+	margin-top: 0;
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.setting-item.mod-heading
+	.setting-item-info
+	.setting-item-name {
+	font-size: 1.3em;
+	font-weight: 700;
+	color: var(--interactive-accent);
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	position: relative;
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.setting-item.mod-heading
+	.setting-item-info
+	.setting-item-name::after {
+	content: "";
+	position: absolute;
+	bottom: -8px;
+	left: 0;
+	width: 40px;
+	height: 3px;
+	background: linear-gradient(
+		90deg,
+		var(--interactive-accent),
+		var(--interactive-accent-hover)
+	);
+	border-radius: 2px;
+}
+
+/* Информация о настройках */
+.obsidian-kinopoisk-plugin__settings .setting-item-info {
+	flex-grow: 1;
+	margin-right: 20px;
+	padding-right: 10px;
+}
+
+.obsidian-kinopoisk-plugin__settings .setting-item-name {
+	font-weight: 600;
+	color: var(--text-normal);
+	margin-bottom: 6px;
+	font-size: 1em;
+}
+
+.obsidian-kinopoisk-plugin__settings .setting-item-description {
+	color: var(--text-muted);
+	font-size: 0.9em;
+	line-height: 1.5;
+}
+
+.obsidian-kinopoisk-plugin__settings .setting-item-description a {
+	color: var(--interactive-accent);
+	text-decoration: none;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+.obsidian-kinopoisk-plugin__settings .setting-item-description a:hover {
+	color: var(--interactive-accent-hover);
+	text-decoration: underline;
+	transform: translateY(-1px);
+}
+
+/* Контролы настроек */
+.obsidian-kinopoisk-plugin__settings .setting-item-control {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 400px;
+	max-width: 600px;
+	flex-shrink: 0;
+}
+
+/* Поля ввода - ШИРОКИЕ И ОДИНАКОВЫЕ */
+.obsidian-kinopoisk-plugin__settings input[type="text"],
+.obsidian-kinopoisk-plugin__settings input[type="search"] {
+	width: 100%;
+	min-width: 400px;
+	max-width: 600px;
+	padding: 12px 16px;
+	border: 2px solid var(--background-modifier-border);
+	border-radius: 8px;
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: 0.95em;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	box-sizing: border-box;
+}
+
+.obsidian-kinopoisk-plugin__settings input[type="text"]:focus,
+.obsidian-kinopoisk-plugin__settings input[type="search"]:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 3px rgba(var(--interactive-accent-rgb), 0.2);
+	transform: scale(1.02);
+}
+
+.obsidian-kinopoisk-plugin__settings input[type="text"]:hover,
+.obsidian-kinopoisk-plugin__settings input[type="search"]:hover {
+	border-color: var(--interactive-accent);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Индикаторы валидации токена - ПРАВИЛЬНЫЕ ЦВЕТА */
+.obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-checking {
+	border-color: #ffa500 !important; /* Оранжевый/желтый для проверки */
+	background-color: var(--background-primary);
+	position: relative;
+	animation: tokenPulse 2s infinite ease-in-out;
+}
+
+.obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-checking::after {
+	content: "";
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 18px;
+	height: 18px;
+	border: 3px solid #ffa500;
+	border-top: 3px solid transparent;
+	border-radius: 50%;
+	animation: tokenSpin 1s linear infinite;
+}
+
+.obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-valid {
+	border-color: #00aa00 !important; /* Зеленый для валидного */
+	background-color: var(--background-primary);
+	box-shadow: 0 0 0 2px rgba(0, 170, 0, 0.2);
+	animation: tokenSuccess 0.5s ease-out;
+}
+
+.obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-valid::after {
+	content: "✓";
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #00aa00;
+	font-weight: bold;
+	font-size: 16px;
+	animation: tokenCheckmark 0.5s ease-out;
+}
+
+.obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-invalid {
+	border-color: #ff4444 !important; /* Красный для невалидного */
+	background-color: var(--background-primary);
+	box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
+	animation: tokenError 0.5s ease-out;
+}
+
+.obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-invalid::after {
+	content: "✕";
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #ff4444;
+	font-weight: bold;
+	font-size: 16px;
+	animation: tokenError 0.5s ease-out;
+}
+
+/* Кнопки - ФИКСИРОВАННАЯ ШИРИНА */
+.obsidian-kinopoisk-plugin__settings button {
+	padding: 12px 20px;
+	border: 2px solid var(--interactive-normal);
+	border-radius: 8px;
+	background-color: var(--interactive-normal);
+	color: var(--text-on-accent);
+	font-size: 0.9em;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	white-space: nowrap;
+	position: relative;
+	overflow: hidden;
+	min-width: 140px;
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.obsidian-kinopoisk-plugin__settings button::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.2),
+		transparent
+	);
+	transition: left 0.5s;
+}
+
+.obsidian-kinopoisk-plugin__settings button:hover:not(:disabled) {
+	background-color: var(--interactive-hover);
+	border-color: var(--interactive-hover);
+	transform: translateY(-3px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.obsidian-kinopoisk-plugin__settings button:hover:not(:disabled)::before {
+	left: 100%;
+}
+
+.obsidian-kinopoisk-plugin__settings button:active {
+	transform: translateY(-1px);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.obsidian-kinopoisk-plugin__settings button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.obsidian-kinopoisk-plugin__settings button.mod-cta {
+	background-color: var(--interactive-accent);
+	border-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.obsidian-kinopoisk-plugin__settings button.mod-cta:hover:not(:disabled) {
+	background-color: var(--interactive-accent-hover);
+	border-color: var(--interactive-accent-hover);
+}
+
+/* Переключатели (Toggle) */
+.obsidian-kinopoisk-plugin__settings .checkbox-container {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	user-select: none;
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.checkbox-container
+	input[type="checkbox"] {
+	position: relative;
+	width: 50px;
+	height: 26px;
+	margin: 0;
+	appearance: none;
+	background-color: var(--background-modifier-border);
+	border-radius: 13px;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	cursor: pointer;
+	border: 2px solid var(--background-modifier-border);
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.checkbox-container
+	input[type="checkbox"]:hover {
+	background-color: var(--background-modifier-border-hover);
+	transform: scale(1.05);
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.checkbox-container
+	input[type="checkbox"]:checked {
+	background-color: var(--interactive-accent);
+	border-color: var(--interactive-accent);
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.checkbox-container
+	input[type="checkbox"]::before {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 18px;
+	height: 18px;
+	background-color: var(--background-primary);
+	border-radius: 50%;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.obsidian-kinopoisk-plugin__settings
+	.checkbox-container
+	input[type="checkbox"]:checked::before {
+	transform: translateX(24px);
+}
+
+/* Анимации */
+@keyframes tokenPulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+	}
+	50% {
+		box-shadow: 0 0 0 6px rgba(255, 165, 0, 0.4);
+	}
+}
+
+@keyframes tokenSpin {
+	0% {
+		transform: translateY(-50%) rotate(0deg);
+	}
+	100% {
+		transform: translateY(-50%) rotate(360deg);
+	}
+}
+
+@keyframes tokenSuccess {
+	0% {
+		box-shadow: 0 0 0 2px rgba(0, 170, 0, 0);
+		transform: scale(1);
+	}
+	50% {
+		box-shadow: 0 0 0 6px rgba(0, 170, 0, 0.4);
+		transform: scale(1.02);
+	}
+	100% {
+		box-shadow: 0 0 0 2px rgba(0, 170, 0, 0.2);
+		transform: scale(1);
+	}
+}
+
+@keyframes tokenError {
+	0% {
+		box-shadow: 0 0 0 2px rgba(255, 68, 68, 0);
+		transform: scale(1);
+	}
+	25% {
+		transform: scale(1.02) translateX(-2px);
+	}
+	75% {
+		transform: scale(1.02) translateX(2px);
+	}
+	100% {
+		box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
+		transform: scale(1);
+	}
+}
+
+@keyframes tokenCheckmark {
+	0% {
+		opacity: 0;
+		transform: translateY(-50%) scale(0.5);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(-50%) scale(1);
+	}
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+	.obsidian-kinopoisk-plugin__settings {
+		padding: 16px;
+	}
+
+	.obsidian-kinopoisk-plugin__settings .setting-item {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 16px;
+		padding: 16px 0;
+	}
+
+	.obsidian-kinopoisk-plugin__settings .setting-item-info {
+		margin-right: 0;
+		margin-bottom: 12px;
+		padding-right: 0;
+	}
+
+	.obsidian-kinopoisk-plugin__settings .setting-item-control {
+		min-width: unset;
+		width: 100%;
+	}
+
+	.obsidian-kinopoisk-plugin__settings input[type="text"],
+	.obsidian-kinopoisk-plugin__settings input[type="search"] {
+		min-width: unset;
+		max-width: none;
+	}
+
+	.obsidian-kinopoisk-plugin__settings button {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+@media (max-width: 480px) {
+	.obsidian-kinopoisk-plugin__settings {
+		padding: 12px;
+	}
+
+	.obsidian-kinopoisk-plugin__settings .setting-item {
+		padding: 12px 0;
+	}
+
+	.obsidian-kinopoisk-plugin__settings input[type="text"],
+	.obsidian-kinopoisk-plugin__settings input[type="search"] {
+		padding: 14px 16px;
+		font-size: 16px; /* Предотвращает зум на iOS */
+	}
+
+	.obsidian-kinopoisk-plugin__settings button {
+		padding: 14px 20px;
+		font-size: 0.95em;
+	}
+
+	.obsidian-kinopoisk-plugin__settings
+		.setting-item.mod-heading
+		.setting-item-info
+		.setting-item-name {
+		font-size: 1.2em;
+	}
+}
+
+/* Дополнительные улучшения для темной темы */
+@media (prefers-color-scheme: dark) {
+	.obsidian-kinopoisk-plugin__settings input[type="text"]:hover,
+	.obsidian-kinopoisk-plugin__settings input[type="search"]:hover {
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	}
+
+	.obsidian-kinopoisk-plugin__settings button:hover:not(:disabled) {
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+	}
+}
+
+/* Стили для улучшенной фокусировки и доступности */
+.obsidian-kinopoisk-plugin__settings *:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 2px;
+}
+
+.obsidian-kinopoisk-plugin__settings button:focus-visible {
+	outline-offset: 1px;
+}
+
+.obsidian-kinopoisk-plugin__settings a:focus-visible {
+	outline: none;
+}

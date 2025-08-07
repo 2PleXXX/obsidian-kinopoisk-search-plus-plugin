@@ -1,0 +1,46 @@
+{
+	"name": "obsidian-kinopoisk-search-plus-plugin",
+	"version": "0.5.1",
+	"description": "Helps you find movies and tv shows via Kinopoisk and create notes.",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"version": "node version-bump.mjs && git add manifest.json versions.json"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin.git"
+	},
+	"homepage": "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin#readme",
+	"bugs": {
+		"url": "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin/issues"
+	},
+	"keywords": [
+		"obsidian",
+		"plugin",
+		"kinopoisk",
+		"movies",
+		"tv-shows",
+		"films",
+		"cinema",
+		"кинопоиск",
+		"фильмы"
+	],
+	"author": "2PleXXX",
+	"license": "AGPL-3.0",
+	"devDependencies": {
+		"@types/node": "^20.14.0",
+		"@typescript-eslint/eslint-plugin": "^7.18.0",
+		"@typescript-eslint/parser": "^7.18.0",
+		"builtin-modules": "^4.0.0",
+		"esbuild": "^0.25.8",
+		"eslint": "^8.57.1",
+		"obsidian": "latest",
+		"tslib": "^2.6.3",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"@popperjs/core": "^2.11.8"
+	}
+}
