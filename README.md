@@ -12,9 +12,10 @@ Key differences between the [original plugin](https://github.com/Alintor/obsidia
 
 1. **Extended variable support** - More template variables are now available.
 2. **Image storage toggle** - Option to enable/disable saving images to your vault.
-3. **Improved UI and UX** – The user interface and experience have been refined for smoother interaction.
-4. **Better Obsidian compatibility** - Improved integration with Obsidian features
-5. **Bug fixes** - Minor issues from the original version have been resolved
+3. **Bilingual support** - Switch between English and Russian interface.
+4. **Improved UI and UX** – The user interface and experience have been refined for smoother interaction.
+5. **Better Obsidian compatibility** - Improved integration with Obsidian features
+6. **Bug fixes** - Minor issues from the original version have been resolved
 
 ---
 
