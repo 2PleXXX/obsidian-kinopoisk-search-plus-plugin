@@ -1,3 +1,5 @@
+# **English** | **[Русский](README_RU.md)**
+
 # Credits
 
 Based on the original work by [Alintor](https://github.com/Alintor)

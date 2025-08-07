@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "09bd3831ebe1c8dc",
+        "id": "bb5792cd4e1c4df7",
         "type": "tabs",
         "children": [
           {
-            "id": "4be66b110c73b74e",
+            "id": "56d3dc14e024cb78",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -164,6 +164,10 @@
   },
   "active": "543bc1d384495bb8",
   "lastOpenFiles": [
+    "01 All movies/Луна 2112.md",
+    "01 All movies/Интерстеллар.md",
+    "01 All movies/Во все тяжкие.md",
+    "01 All movies/Аркейн.md",
     "02 Downloaded images/Луна 2112_2009_poster.jpg",
     "Структура.md",
     "01 All movies/Луна 2112 (Копия[1]).md",
@@ -196,7 +200,6 @@
     "01 All movies/Луна 2112 (Копия[2]).md",
     "03 Templates/02 Template with all variables.md",
     "01 All movies/Аркейн (Копия[1]).md",
-    "01 All movies/Луна 2112.md",
     "01 All movies/Игра престолов.md",
     "Предложенные улучшения/00 Предложенные улучшения.md",
     "Все API.md",
@@ -206,8 +209,6 @@
     "01 All movies/Аркейн (2021).md",
     "00 Руководство/00 Доступные переменные.md",
     "00 Руководство/01 Варианты для названия файлов.md",
-    "Текущие проблемы.md",
-    "Что нужно изменить.md",
-    "README.md"
+    "Текущие проблемы.md"
   ]
 }

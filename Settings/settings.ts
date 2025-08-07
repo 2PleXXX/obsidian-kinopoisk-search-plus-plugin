@@ -25,7 +25,8 @@ import {
 	SupportedLanguage,
 } from "../i18n";
 
-const docUrl = "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin";
+const docUrl =
+	"https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin";
 const apiSite = "https://kinopoisk.dev/";
 
 /**

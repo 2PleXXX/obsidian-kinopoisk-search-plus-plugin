@@ -2154,7 +2154,7 @@ var FileSuggest = class extends import_obsidian7.AbstractInputSuggest {
 };
 
 // Settings/settings.ts
-var docUrl = "https://github.com/2PleXXX/obsidian-kinopoisk-plus-plugin";
+var docUrl = "https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin";
 var apiSite = "https://kinopoisk.dev/";
 var DEFAULT_SETTINGS = {
   language: "en",
