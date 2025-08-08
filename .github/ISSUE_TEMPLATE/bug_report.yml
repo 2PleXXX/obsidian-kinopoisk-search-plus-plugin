@@ -1,0 +1,91 @@
+name: 🐛 Bug Report
+description: Report a bug or issue
+title: "[Bug]: "
+labels: ["bug"]
+assignees: []
+
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Thanks for reporting a bug! Please fill out this template to help us fix it quickly.
+
+    - type: textarea
+      id: description
+      attributes:
+          label: 🔍 Bug Description
+          description: Clear description of what went wrong
+          placeholder: The plugin crashes when I try to search for movies...
+      validations:
+          required: true
+
+    - type: dropdown
+      id: obsidian-version
+      attributes:
+          label: 📱 Obsidian Version
+          options:
+              - v1.4.13
+              - v1.4.14
+              - v1.4.15
+              - v1.4.16
+              - Other (specify in additional info)
+      validations:
+          required: true
+
+    - type: input
+      id: plugin-version
+      attributes:
+          label: 🔌 Plugin Version
+          placeholder: "v0.1.0"
+      validations:
+          required: true
+
+    - type: dropdown
+      id: os
+      attributes:
+          label: 💻 Operating System
+          options:
+              - Windows
+              - macOS
+              - Linux
+      validations:
+          required: true
+
+    - type: textarea
+      id: steps
+      attributes:
+          label: 🔄 Steps to Reproduce
+          description: Step by step instructions
+          placeholder: |
+              1. Open plugin
+              2. Search for "Matrix"
+              3. Click first result
+              4. Error appears
+      validations:
+          required: true
+
+    - type: textarea
+      id: expected
+      attributes:
+          label: ✅ Expected Behavior
+          placeholder: Should create a note with movie info...
+      validations:
+          required: true
+
+    - type: textarea
+      id: actual
+      attributes:
+          label: ❌ Actual Behavior
+          placeholder: Instead, got error message...
+      validations:
+          required: true
+
+    - type: textarea
+      id: additional
+      attributes:
+          label: 📋 Additional Info
+          description: Console errors, screenshots, template used, etc.
+          placeholder: |
+              - Using custom template
+              - Console error: [paste here]
+              - Screenshot: [attach if helpful]

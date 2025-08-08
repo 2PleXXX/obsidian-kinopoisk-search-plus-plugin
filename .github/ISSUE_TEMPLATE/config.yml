@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+    - name: 💬 Ask a Question
+      url: https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/discussions/categories/q-a
+      about: For usage questions and general help
+    - name: 💡 Feature Request
+      url: https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/discussions/categories/ideas
+      about: Suggest new features and improvements
