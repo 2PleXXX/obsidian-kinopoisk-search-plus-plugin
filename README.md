@@ -4,8 +4,6 @@
 
 Based on the original work by [Alintor](https://github.com/Alintor)
 
----
-
 # Plugin Differences
 
 Key differences between the [original plugin](https://github.com/Alintor/obsidian-kinopoisk-plugin) and this plugin:
@@ -17,13 +15,9 @@ Key differences between the [original plugin](https://github.com/Alintor/obsidia
 5. **Better Obsidian compatibility** - Improved integration with Obsidian features
 6. **Bug fixes** - Minor issues from the original version have been resolved
 
----
-
 # Obsidian Kinopoisk Search Plus Plugin
 
 Easily search movies and TV shows info via Kinopoisk and create notes.
-
----
 
 # Description
 
@@ -31,15 +25,11 @@ Search movies and TV shows information from Kinopoisk database.
 
 Uses the Kinopoisk.dev API to retrieve comprehensive film and series data.
 
----
-
 # How to install
 
 **Option 1:** Search for "Kinopoisk Search Plus" in the Obsidian Community plugins _(coming soon to Community Plugins)_
 
 **Option 2:** Manual installation - download the latest release files (`main.js`, `manifest.json`, `styles.css`) from [Releases](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases) and place them in your vault's `.obsidian/plugins/kinopoisk-search-plus/` folder.
-
----
 
 # How to use
 
@@ -59,13 +49,9 @@ Uses the Kinopoisk.dev API to retrieve comprehensive film and series data.
 
 <img src="assets/Created.png" alt="Created" width="500">
 
----
-
 # Configure plugin in settings
 
 <img src="assets/Settings.png" alt="Settings" width="500">
-
----
 
 # Get API Token
 
@@ -75,8 +61,6 @@ You need an API token to use this plugin.
 2. Choose the free plan
 3. Follow the registration steps
 4. Copy your API token to the plugin settings
-
----
 
 # New file name
 
@@ -90,15 +74,11 @@ This creates files like "The Matrix (1999).md"
 
 **Learn more about naming options:** [File Naming Options](#file-naming-options)
 
----
-
 # New file location
 
 Set the folder location where new files are created.
 
 If no location is specified, new files are created in the Obsidian root folder.
-
----
 
 # Image Storage
 
@@ -111,8 +91,6 @@ Enable image saving in the plugin settings and specify the path to the folder wh
 -   **Posters** - Movie/TV show poster images
 -   **Covers** - Wide cover images
 -   **Logos** - Film/series logo images
-
----
 
 # Template file
 
@@ -150,8 +128,6 @@ director: [{{director}}]
 ### ⚠️ Important Template Editing Warning
 
 > **Critical:** Always edit templates in **Source mode** only. Using Obsidian's visual editor will automatically reformat the template syntax, breaking functionality. Template modifications must be made exclusively in source mode to preserve proper formatting.
-
----
 
 # Template variables definitions
 
@@ -336,8 +312,6 @@ Contain ready markdown links for displaying images in Obsidian. Use local file r
 
 **Some template variables may display empty values.** This occurs when the source website lacks the corresponding information. This is expected behavior and does not require reporting.
 
----
-
 # File Naming Options
 
 **Available variables for file names:**
@@ -398,8 +372,6 @@ Contain ready markdown links for displaying images in Obsidian. Use local file r
 
 > **Note:** You can experiment with different variable combinations, including variables not mentioned here. However, I cannot guarantee proper functionality in such cases. 😊
 
----
-
 # Learn More About the Plugin
 
 You can download the example vault from the repository and open it locally. The vault contains everything you need to understand how the plugin works.
@@ -410,13 +382,9 @@ You can download the example vault from the repository and open it locally. The 
 -   [Clone Repository](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin)
 -   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v0.1.0/Example.Vault.rar)
 
----
-
 # License
 
 [Obsidian Kinopoisk Plus Plugin](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin) is licensed under the GNU AGPLv3 license. Refer to [LICENSE](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/blob/main/LICENSE) for more information.
-
----
 
 # Related Tools
 
