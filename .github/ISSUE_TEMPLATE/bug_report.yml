@@ -24,21 +24,37 @@ body:
       attributes:
           label: 📱 Obsidian Version
           options:
-              - v1.4.13
-              - v1.4.14
-              - v1.4.15
-              - v1.4.16
+              - v1.8.10 (latest)
+              - v1.8.9
+              - v1.8.7
+              - v1.8.4
+              - v1.8.3
+              - v1.7.7
+              - v1.7.6
+              - v1.7.5
+              - v1.7.4
+              - v1.6.7
               - Other (specify in additional info)
       validations:
           required: true
 
-    - type: input
+    - type: dropdown
       id: plugin-version
       attributes:
           label: 🔌 Plugin Version
-          placeholder: "v0.1.0"
+          description: Check your installed version in Settings > Community plugins
+          options:
+              - v0.1.0 (latest)
+              - Custom/Other (specify below)
       validations:
           required: true
+
+    - type: input
+      id: custom-plugin-version
+      attributes:
+          label: 🔧 Custom Plugin Version (if selected above)
+          description: Only fill if you selected "Custom/Other" above
+          placeholder: "v0.0.9, main branch, etc."
 
     - type: dropdown
       id: os
