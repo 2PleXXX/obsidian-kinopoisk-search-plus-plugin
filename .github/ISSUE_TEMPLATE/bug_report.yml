@@ -56,7 +56,8 @@ body:
           label: 🔌 Plugin Version
           description: "Check in Settings → Community plugins. If not listed, select 'Other' and specify below"
           options:
-              - v0.1.0 (latest)
+              - v1.0.0 (latest)
+              - v0.1.0
               - Other version (specify below)
       validations:
           required: true

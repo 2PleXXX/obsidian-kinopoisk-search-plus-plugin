@@ -1,12 +1,8 @@
 /**
  * FileSuggester.ts
  *
- * Компонент автодополнения для выбора файлов в настройках плагина.
- * Предоставляет пользователю возможность быстро найти и выбрать .md файлы
- * из хранилища Obsidian при настройке шаблонов.
- *
- * Используется в настройках плагина для выбора файла шаблона.
- * Основан на коде из плагина Periodic Notes от Liam Cain.
+ * File autocomplete component for plugin settings.
+ * Provides quick search and selection of .md files from Obsidian vault.
  */
 
 import { TAbstractFile, TFile, AbstractInputSuggest, App } from "obsidian";
@@ -25,8 +21,7 @@ export class FileSuggest extends AbstractInputSuggest<TFile> {
 	}
 
 	/**
-	 * Получает список файлов, соответствующих введенному тексту
-	 * Фильтрует только .md файлы
+	 * Get files matching input text - filters only .md files
 	 */
 	getSuggestions(inputStr: string): TFile[] {
 		if (!inputStr) {
@@ -48,7 +43,7 @@ export class FileSuggest extends AbstractInputSuggest<TFile> {
 				}
 			});
 
-			// Ограничиваем количество результатов для производительности
+			// Limit results for performance
 			return files.slice(0, 20);
 		} catch (error) {
 			console.error(t("suggesters.fileListError"), error);
@@ -56,18 +51,12 @@ export class FileSuggest extends AbstractInputSuggest<TFile> {
 		}
 	}
 
-	/**
-	 * Отображает предложение в выпадающем списке
-	 */
 	renderSuggestion(file: TFile, el: HTMLElement): void {
 		if (file && el) {
 			el.setText(file.path);
 		}
 	}
 
-	/**
-	 * Обрабатывает выбор файла пользователем
-	 */
 	selectSuggestion(file: TFile): void {
 		if (file && file.path) {
 			this.setValue(file.path);

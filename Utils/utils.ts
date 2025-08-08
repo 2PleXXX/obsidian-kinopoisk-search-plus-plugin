@@ -1,24 +1,16 @@
 /**
  * utils.ts
  *
- * Набор вспомогательных функций для обработки данных фильмов/сериалов.
- * Содержит утилиты для:
- * - Форматирования текста и имен файлов
- * - Замены переменных в шаблонах
- * - Создания уникальных имен файлов
- * - Чтения содержимого шаблонов
+ * Helper functions for movie/series data processing.
+ * Handles text formatting, template variable replacement, and file operations.
  *
- * Ключевая особенность: разное форматирование для метаданных YAML
- * (с кавычками) и основного текста (без кавычек).
+ * Key feature: Different formatting for YAML metadata (quoted) vs body text (unquoted).
  */
 
 import { MovieShow } from "Models/MovieShow.model";
 import { App, normalizePath, Notice } from "obsidian";
 import { t } from "../i18n";
 
-/**
- * Делает первую букву строки заглавной
- */
 export function capitalizeFirstLetter(input: string): string {
 	if (!input || input.length === 0) {
 		return input || "";
@@ -27,7 +19,7 @@ export function capitalizeFirstLetter(input: string): string {
 }
 
 /**
- * Заменяет недопустимые символы в именах файлов
+ * Replace illegal filename characters
  */
 export function replaceIllegalFileNameCharactersInString(text: string): string {
 	if (!text) {
@@ -37,13 +29,12 @@ export function replaceIllegalFileNameCharactersInString(text: string): string {
 }
 
 /**
- * Получает значение из массива без кавычек для использования в основном тексте
+ * Get unquoted value from array for use in body text
  */
 function getPlainValueFromArray(value: unknown): string | number {
 	if (Array.isArray(value)) {
 		if (value.length === 0) return "";
 
-		// Если массив содержит один элемент, возвращаем его
 		if (value.length === 1) {
 			const firstValue = value[0];
 			if (typeof firstValue === "string") {
@@ -52,7 +43,7 @@ function getPlainValueFromArray(value: unknown): string | number {
 			return firstValue ?? "";
 		}
 
-		// Если массив содержит несколько элементов, объединяем их через запятую
+		// Join multiple elements with comma
 		return value
 			.filter((item) => item != null)
 			.map((item) => {
@@ -64,7 +55,6 @@ function getPlainValueFromArray(value: unknown): string | number {
 			.join(", ");
 	}
 
-	// Если это число, возвращаем как число
 	if (typeof value === "number") {
 		return value;
 	}
@@ -73,27 +63,24 @@ function getPlainValueFromArray(value: unknown): string | number {
 }
 
 /**
- * Получает значение с кавычками для использования в YAML метаданных
+ * Get quoted value from array for use in YAML metadata
  */
 function getQuotedValueFromArray(value: unknown): string {
 	if (Array.isArray(value)) {
 		if (value.length === 0) return "";
 
-		// Если массив содержит один элемент, возвращаем его
 		if (value.length === 1) {
 			const firstValue = String(value[0] || "");
 
-			// Проверяем, является ли это markdown-ссылкой
+			// Handle markdown links
 			if (firstValue.startsWith("![[") || firstValue.startsWith("![](")) {
-				// Для markdown-ссылок добавляем кавычки, если их еще нет
 				if (!firstValue.startsWith('"') && !firstValue.endsWith('"')) {
 					return `"${firstValue}"`;
 				}
 			}
 
-			// Если это уже строка в кавычках, экранируем внутренние кавычки
+			// Escape quotes in already quoted strings
 			if (firstValue.startsWith('"') && firstValue.endsWith('"')) {
-				// Убираем внешние кавычки, экранируем внутренние, добавляем внешние обратно
 				const innerText = firstValue.slice(1, -1);
 				const escapedInnerText = innerText.replace(/"/g, '\\"');
 				return `"${escapedInnerText}"`;
@@ -102,21 +89,20 @@ function getQuotedValueFromArray(value: unknown): string {
 			return firstValue;
 		}
 
-		// Если массив содержит несколько элементов, объединяем их через запятую
+		// Join multiple elements with comma
 		return value
 			.filter((item) => item != null)
 			.map((item) => {
 				const itemStr = String(item);
 
-				// Проверяем, является ли это markdown-ссылкой
+				// Handle markdown links
 				if (itemStr.startsWith("![[") || itemStr.startsWith("![](")) {
-					// Для markdown-ссылок добавляем кавычки, если их еще нет
 					if (!itemStr.startsWith('"') && !itemStr.endsWith('"')) {
 						return `"${itemStr}"`;
 					}
 				}
 
-				// Если это строка в кавычках, экранируем внутренние кавычки
+				// Escape quotes in quoted strings
 				if (itemStr.startsWith('"') && itemStr.endsWith('"')) {
 					const innerText = itemStr.slice(1, -1);
 					const escapedInnerText = innerText.replace(/"/g, '\\"');
@@ -130,7 +116,7 @@ function getQuotedValueFromArray(value: unknown): string {
 
 	const stringValue = String(value || "");
 
-	// Если это строка в кавычках, экранируем внутренние кавычки
+	// Escape quotes in quoted strings
 	if (stringValue.startsWith('"') && stringValue.endsWith('"')) {
 		const innerText = stringValue.slice(1, -1);
 		const escapedInnerText = innerText.replace(/"/g, '\\"');
@@ -141,8 +127,8 @@ function getQuotedValueFromArray(value: unknown): string {
 }
 
 /**
- * Заменяет переменные в шаблоне данными из объекта MovieShow
- * Обрабатывает по-разному YAML frontmatter (с кавычками) и основной текст (без кавычек)
+ * Replace template variables with MovieShow data
+ * Handles YAML frontmatter (quoted) and body text (unquoted) differently
  */
 export function replaceVariableSyntax(
 	movieShow: MovieShow,
@@ -153,15 +139,15 @@ export function replaceVariableSyntax(
 	}
 
 	try {
-		// Разделяем текст на блок метаданных и тело заметки
+		// Split text into frontmatter and body
 		const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
 		const match = text.match(frontmatterRegex);
 
 		if (match) {
-			// Есть блок метаданных
+			// Has frontmatter block
 			const [, frontmatter, body] = match;
 
-			// Обрабатываем блок метаданных с кавычками
+			// Process frontmatter with quotes
 			const processedFrontmatter = Object.entries(movieShow).reduce(
 				(result, [key, val = ""]) => {
 					try {
@@ -181,7 +167,7 @@ export function replaceVariableSyntax(
 				frontmatter
 			);
 
-			// Обрабатываем тело заметки без кавычек
+			// Process body without quotes
 			const processedBody = Object.entries(movieShow).reduce(
 				(result, [key, val = ""]) => {
 					try {
@@ -201,13 +187,13 @@ export function replaceVariableSyntax(
 				body
 			);
 
-			// Собираем результат
+			// Combine result
 			const result = `---\n${processedFrontmatter}\n---\n${processedBody}`;
 
-			// Убираем неиспользованные переменные
+			// Remove unused variables
 			return result.replace(/{{\w+}}/gi, "").trim();
 		} else {
-			// Нет блока метаданных, обрабатываем весь текст без кавычек
+			// No frontmatter, process entire text without quotes
 			const entries = Object.entries(movieShow);
 
 			return entries
@@ -231,13 +217,13 @@ export function replaceVariableSyntax(
 		}
 	} catch (error) {
 		console.error("Error in replaceVariableSyntax:", error);
-		return text; // Возвращаем оригинальный текст в случае ошибки
+		return text; // Return original text on error
 	}
 }
 
 /**
- * Создает уникальное имя файла, избегая конфликтов с существующими файлами
- * Добавляет суффикс "(Копия[N])" если файл уже существует
+ * Create unique filename, avoiding conflicts with existing files
+ * Adds "(Copy[N])" suffix if file already exists
  */
 export async function makeFileName(
 	app: App,
@@ -263,17 +249,17 @@ export async function makeFileName(
 
 		const fileName = cleanedBaseName + ".md";
 
-		// Проверяем существование файла с учетом папки
+		// Check file existence considering folder
 		const { vault } = app;
 		const fullPath = folderPath ? `${folderPath}/${fileName}` : fileName;
 		const normalizedPath = normalizePath(fullPath);
 
 		if (!vault.getAbstractFileByPath(normalizedPath)) {
-			// Файл не существует, возвращаем оригинальное имя
+			// File doesn't exist, return original name
 			return fileName;
 		}
 
-		// Файл существует, ищем свободный номер копии
+		// File exists, find available copy number
 		let copyNumber = 1;
 		let copyFileName: string;
 		let copyFullPath: string;
@@ -296,8 +282,8 @@ export async function makeFileName(
 }
 
 /**
- * Читает содержимое файла шаблона
- * Возвращает пустую строку если шаблон не найден или произошла ошибка
+ * Read template file contents
+ * Returns empty string if template not found or error occurs
  */
 export async function getTemplateContents(
 	app: App,

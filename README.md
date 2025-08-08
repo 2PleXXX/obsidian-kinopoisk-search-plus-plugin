@@ -380,7 +380,7 @@ You can download the example vault from the repository and open it locally. The 
 **Option 2:** Download the vault archive directly
 
 -   [Clone Repository](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin)
--   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v0.1.0/Example.Vault.rar)
+-   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v1.0.0/Example.Vault.rar)
 
 # License
 

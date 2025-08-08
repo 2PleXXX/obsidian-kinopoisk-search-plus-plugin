@@ -1,18 +1,12 @@
 /**
  * kinopoisk_response.ts
  *
- * Типы и интерфейсы для работы с API Кинопоиска (kinopoisk.dev).
- * Определяет структуру данных, получаемых от API для поиска фильмов/сериалов
- * и получения детальной информации о них.
- *
- * Включает в себя:
- * - Типы для результатов поиска
- * - Типы для полной информации о фильме/сериале
- * - Вспомогательные интерфейсы для структурированных данных
+ * Types and interfaces for Kinopoisk API (kinopoisk.dev)
+ * Defines data structures for movie/series search and detailed information
  */
 
 /**
- * Элемент результата поиска фильма/сериала
+ * Search result item
  */
 export interface KinopoiskSuggestItem {
 	id: number;
@@ -24,14 +18,14 @@ export interface KinopoiskSuggestItem {
 }
 
 /**
- * Ответ API на запрос поиска
+ * Search API response
  */
 export interface KinopoiskSuggestItemsResponse {
 	docs: KinopoiskSuggestItem[];
 }
 
 /**
- * Полная информация о фильме/сериале от API Кинопоиска
+ * Complete movie/series information from Kinopoisk API
  */
 export interface KinopoiskFullInfo {
 	id: number;
@@ -77,7 +71,7 @@ export interface KinopoiskFullInfo {
 }
 
 /**
- * URL изображения с превью
+ * Image URL with preview
  */
 export interface KinopoiskImageUrl {
 	url?: string;
@@ -85,14 +79,14 @@ export interface KinopoiskImageUrl {
 }
 
 /**
- * Простой элемент с названием (жанр, страна и т.д.)
+ * Simple item with name (genre, country, etc.)
  */
 export interface KinopoiskSimpleItem {
 	name: string;
 }
 
 /**
- * Информация о персоне (актер, режиссер и т.д.)
+ * Person information (actor, director, etc.)
  */
 export interface KinopoiskPerson {
 	id?: number;
@@ -105,7 +99,7 @@ export interface KinopoiskPerson {
 }
 
 /**
- * Информация о сезоне сериала
+ * Series season information
  */
 export interface KinopoiskSeasonInfo {
 	number: number;
@@ -113,7 +107,7 @@ export interface KinopoiskSeasonInfo {
 }
 
 /**
- * Рейтинги от различных источников
+ * Ratings from various sources
  */
 export interface KinopoiskRatings {
 	kp?: number;
@@ -124,7 +118,7 @@ export interface KinopoiskRatings {
 }
 
 /**
- * Внешние идентификаторы фильма/сериала
+ * External movie/series identifiers
  */
 export interface KinopoiskExternalIds {
 	imdb?: string;
@@ -133,7 +127,7 @@ export interface KinopoiskExternalIds {
 }
 
 /**
- * Денежная сумма с валютой
+ * Money amount with currency
  */
 export interface KinopoiskMoney {
 	value?: number;
@@ -141,7 +135,7 @@ export interface KinopoiskMoney {
 }
 
 /**
- * Сборы в разных регионах
+ * Box office collections by region
  */
 export interface KinopoiskFees {
 	world?: KinopoiskMoney;
@@ -150,7 +144,7 @@ export interface KinopoiskFees {
 }
 
 /**
- * Даты премьер в разных форматах
+ * Premiere dates in different formats
  */
 export interface KinopoiskPremiere {
 	world?: string;
@@ -160,7 +154,7 @@ export interface KinopoiskPremiere {
 }
 
 /**
- * Количество голосов от разных источников
+ * Vote counts from various sources
  */
 export interface KinopoiskVotes {
 	kp?: number;
@@ -170,9 +164,6 @@ export interface KinopoiskVotes {
 	await?: number;
 }
 
-/**
- * Интересный факт о фильме/сериале
- */
 export interface KinopoiskFact {
 	value: string;
 	type: string;
@@ -180,7 +171,7 @@ export interface KinopoiskFact {
 }
 
 /**
- * Период выпуска (для сериалов)
+ * Release period (for series)
  */
 export interface KinopoiskReleaseYear {
 	start?: number;
@@ -188,7 +179,7 @@ export interface KinopoiskReleaseYear {
 }
 
 /**
- * Альтернативное название на разных языках
+ * Alternative names in different languages
  */
 export interface KinopoiskName {
 	name: string;
@@ -197,14 +188,14 @@ export interface KinopoiskName {
 }
 
 /**
- * Телевизионные сети/каналы
+ * TV networks/channels
  */
 export interface KinopoiskNetworks {
 	items?: KinopoiskSimpleItem[];
 }
 
 /**
- * Связанный фильм/сериал (сиквел, приквел и т.д.)
+ * Related movie/series (sequel, prequel, etc.)
  */
 export interface KinopoiskRelatedMovie {
 	id: number;
@@ -217,18 +208,12 @@ export interface KinopoiskRelatedMovie {
 	year?: number;
 }
 
-/**
- * Производящая компания
- */
 export interface KinopoiskProductionCompany {
 	name: string;
 	url?: string;
 	previewUrl?: string;
 }
 
-/**
- * Информация о дистрибьюторе
- */
 export interface KinopoiskDistributors {
 	distributor?: string;
 	distributorRelease?: string;

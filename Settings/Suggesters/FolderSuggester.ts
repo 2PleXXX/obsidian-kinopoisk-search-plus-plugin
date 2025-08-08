@@ -1,12 +1,8 @@
 /**
  * FolderSuggester.ts
  *
- * Компонент автодополнения для выбора папок в настройках плагина.
- * Предоставляет пользователю возможность быстро найти и выбрать папку
- * из хранилища Obsidian для сохранения создаваемых заметок о фильмах/сериалах.
- *
- * Используется в настройках плагина для выбора целевой папки сохранения.
- * Основан на коде из плагина Periodic Notes от Liam Cain.
+ * Folder autocomplete component for plugin settings.
+ * Provides quick search and selection of folders from Obsidian vault.
  */
 
 import { TAbstractFile, TFolder, AbstractInputSuggest, App } from "obsidian";
@@ -25,7 +21,7 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 	}
 
 	/**
-	 * Получает список папок, соответствующих введенному тексту
+	 * Get folders matching input text
 	 */
 	getSuggestions(inputStr: string): TFolder[] {
 		if (!inputStr) {
@@ -46,7 +42,7 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 				}
 			});
 
-			// Ограничиваем количество результатов для производительности
+			// Limit results for performance
 			return folders.slice(0, 20);
 		} catch (error) {
 			console.error(t("suggesters.folderListError"), error);
@@ -54,18 +50,12 @@ export class FolderSuggest extends AbstractInputSuggest<TFolder> {
 		}
 	}
 
-	/**
-	 * Отображает предложение папки в выпадающем списке
-	 */
 	renderSuggestion(folder: TFolder, el: HTMLElement): void {
 		if (folder && el) {
 			el.setText(folder.path);
 		}
 	}
 
-	/**
-	 * Обрабатывает выбор папки пользователем
-	 */
 	selectSuggestion(folder: TFolder): void {
 		if (folder && folder.path) {
 			this.setValue(folder.path);

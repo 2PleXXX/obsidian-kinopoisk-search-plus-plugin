@@ -1,10 +1,9 @@
 /**
  * provider.ts
  *
- * Провайдер данных для работы с API Кинопоиска.
- * Отвечает за получение информации о фильмах и сериалах через API kinopoisk.dev,
- * а также за преобразование полученных данных в формат, подходящий для использования
- * в шаблонах Obsidian.
+ * Data provider for Kinopoisk API integration.
+ * Handles movie and TV show data retrieval from kinopoisk.dev API
+ * and transforms it for use in Obsidian templates.
  */
 import { requestUrl } from "obsidian";
 import {
@@ -18,13 +17,9 @@ import { DataFormatter } from "APIProvider/DataFormatter";
 import { ApiValidator } from "APIProvider/ApiValidator";
 import { t, tWithParams } from "../i18n";
 
-// Константы
 const API_BASE_URL = "https://api.kinopoisk.dev/v1.4";
 const MAX_SEARCH_RESULTS = 50;
 
-/**
- * Основной класс для работы с API Кинопоиска
- */
 export class KinopoiskProvider {
 	private errorHandler: ErrorHandler;
 	private dataFormatter: DataFormatter;
@@ -37,7 +32,7 @@ export class KinopoiskProvider {
 	}
 
 	/**
-	 * Выполняет HTTP GET запрос к API
+	 * Performs HTTP GET request to API
 	 */
 	private async apiGet<T>(
 		endpoint: string,
@@ -45,7 +40,6 @@ export class KinopoiskProvider {
 		params: Record<string, string | number> = {},
 		headers?: Record<string, string>
 	): Promise<T> {
-		// Валидация токена
 		if (!this.validator.isValidToken(token)) {
 			throw new Error(t("provider.tokenRequired"));
 		}
@@ -70,7 +64,7 @@ export class KinopoiskProvider {
 	}
 
 	/**
-	 * Строит URL с параметрами
+	 * Builds URL with query parameters
 	 */
 	private buildUrl(
 		endpoint: string,
@@ -88,7 +82,7 @@ export class KinopoiskProvider {
 	}
 
 	/**
-	 * Поиск фильмов и сериалов по запросу
+	 * Search for movies and TV shows by query
 	 */
 	public async searchByQuery(
 		query: string,
@@ -119,7 +113,7 @@ export class KinopoiskProvider {
 	}
 
 	/**
-	 * Получает детальную информацию о фильме/сериале
+	 * Retrieves detailed movie/TV show information by ID
 	 */
 	public async getMovieById(id: number, token: string): Promise<MovieShow> {
 		if (!this.validator.isValidMovieId(id)) {
@@ -145,7 +139,7 @@ export class KinopoiskProvider {
 	}
 
 	/**
-	 * Проверяет валидность API токена
+	 * Validates API token by making test request
 	 */
 	public async validateToken(token: string): Promise<boolean> {
 		if (!this.validator.isValidToken(token)) {
@@ -164,7 +158,7 @@ export class KinopoiskProvider {
 	}
 }
 
-// Экспорт функций для обратной совместимости
+// Legacy compatibility functions
 const provider = new KinopoiskProvider();
 
 export async function getByQuery(

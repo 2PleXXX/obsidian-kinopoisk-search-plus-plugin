@@ -1,16 +1,8 @@
 /**
  * settings.ts
  *
- * Настройки плагина Obsidian Kinopoisk.
- * Определяет интерфейс настроек, значения по умолчанию и создает вкладку настроек
- * в интерфейсе Obsidian.
- *
- * Позволяет пользователю настроить:
- * - Язык интерфейса
- * - API токен для доступа к Кинопоиску
- * - Формат имен файлов для фильмов и сериалов
- * - Папки для сохранения заметок
- * - Файлы шаблонов для создания заметок
+ * Plugin settings interface, defaults, and settings tab.
+ * Manages API token, templates, folders, and image handling configuration.
  */
 
 import { App, PluginSettingTab, Setting, Notice } from "obsidian";
@@ -29,9 +21,6 @@ const docUrl =
 	"https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin";
 const apiSite = "https://kinopoisk.dev/";
 
-/**
- * Интерфейс настроек плагина
- */
 export interface ObsidianKinopoiskPluginSettings {
 	language: SupportedLanguage;
 	apiToken: string;
@@ -43,7 +32,7 @@ export interface ObsidianKinopoiskPluginSettings {
 	seriesFolder: string;
 	seriesTemplateFile: string;
 
-	// Настройки для изображений
+	// Image settings
 	imagesFolder: string;
 	saveImagesLocally: boolean;
 	savePosterImage: boolean;
@@ -51,9 +40,6 @@ export interface ObsidianKinopoiskPluginSettings {
 	saveLogoImage: boolean;
 }
 
-/**
- * Настройки по умолчанию
- */
 export const DEFAULT_SETTINGS: ObsidianKinopoiskPluginSettings = {
 	language: "en",
 	apiToken: "",
@@ -65,7 +51,7 @@ export const DEFAULT_SETTINGS: ObsidianKinopoiskPluginSettings = {
 	seriesFolder: "",
 	seriesTemplateFile: "",
 
-	// Значения по умолчанию для изображений
+	// Image defaults
 	imagesFolder: "attachments/kinopoisk",
 	saveImagesLocally: false,
 	savePosterImage: true,
@@ -73,9 +59,6 @@ export const DEFAULT_SETTINGS: ObsidianKinopoiskPluginSettings = {
 	saveLogoImage: false,
 };
 
-/**
- * Вкладка настроек плагина
- */
 export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 	private validationTimeout: NodeJS.Timeout | null = null;
 	private kinopoiskProvider: KinopoiskProvider;
@@ -84,7 +67,7 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 		super(app, plugin);
 		this.kinopoiskProvider = new KinopoiskProvider();
 
-		// Устанавливаем язык из настроек при создании
+		// Set language from settings on creation
 		setLanguage(this.plugin.settings.language);
 	}
 
@@ -92,9 +75,6 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 		return this.plugin.settings;
 	}
 
-	/**
-	 * Очистка ресурсов при закрытии настроек
-	 */
 	onClose(): void {
 		if (this.validationTimeout) {
 			clearTimeout(this.validationTimeout);
@@ -103,7 +83,7 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 	}
 
 	/**
-	 * Обновляет визуальный индикатор валидности токена
+	 * Update token validation visual indicator
 	 */
 	private updateTokenValidationIndicator(
 		inputElement: HTMLInputElement,
@@ -111,14 +91,14 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 	): void {
 		if (!inputElement) return;
 
-		// Убираем предыдущие классы индикации
+		// Remove previous indicator classes
 		inputElement.removeClass(
 			"kinopoisk-plugin__token-valid",
 			"kinopoisk-plugin__token-invalid",
 			"kinopoisk-plugin__token-checking"
 		);
 
-		// Добавляем соответствующий класс
+		// Add appropriate class
 		if (this.plugin.settings.apiToken.trim() !== "") {
 			if (isValid === null) {
 				inputElement.addClass("kinopoisk-plugin__token-checking");
@@ -131,18 +111,18 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 	}
 
 	/**
-	 * Валидирует токен с задержкой
+	 * Validate token with delay
 	 */
 	private async validateTokenWithDelay(
 		token: string,
 		inputElement: HTMLInputElement
 	): Promise<void> {
-		// Отменяем предыдущую проверку
+		// Cancel previous validation
 		if (this.validationTimeout) {
 			clearTimeout(this.validationTimeout);
 		}
 
-		// Показываем состояние проверки
+		// Show checking state
 		this.updateTokenValidationIndicator(inputElement, null);
 
 		this.validationTimeout = setTimeout(async () => {
@@ -163,7 +143,7 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 	}
 
 	/**
-	 * Создает настройку для выбора папки
+	 * Create folder selection setting
 	 */
 	private createFolderSetting(
 		containerEl: HTMLElement,
@@ -189,7 +169,7 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 	}
 
 	/**
-	 * Создает настройку для выбора файла шаблона
+	 * Create template file selection setting
 	 */
 	private createTemplateSetting(
 		containerEl: HTMLElement,
@@ -220,11 +200,7 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 		containerEl.empty();
 		containerEl.classList.add("obsidian-kinopoisk-plugin__settings");
 
-		// Настройка языка (первая настройка)
-		new Setting(containerEl)
-			.setName(t("settings.languageHeading"))
-			.setHeading();
-
+		// Language setting (first setting)
 		new Setting(containerEl)
 			.setName(t("settings.language"))
 			.setDesc(t("settings.languageDesc"))
@@ -240,12 +216,12 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 						this.plugin.settings.language = value;
 						setLanguage(value);
 						await this.plugin.saveSettings();
-						// Перерисовываем настройки с новым языком
+						// Redraw settings with new language
 						this.display();
 					});
 			});
 
-		// Настройка API токена
+		// API token setting
 		const apiKeyDesc = document.createDocumentFragment();
 		apiKeyDesc.createDiv({
 			text: t("settings.apiTokenDesc"),
@@ -269,14 +245,14 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 						this.plugin.settings.apiTokenValid = false;
 						await this.plugin.saveSettings();
 
-						// Автоматическая проверка токена с задержкой
+						// Automatic token validation with delay
 						if (value.trim() !== "") {
 							await this.validateTokenWithDelay(
 								value.trim(),
 								textComponent.inputEl
 							);
 						} else {
-							// Если токен пустой, отменяем проверку и сбрасываем индикатор
+							// Cancel validation if token is empty and reset indicator
 							if (this.validationTimeout) {
 								clearTimeout(this.validationTimeout);
 								this.validationTimeout = null;
@@ -290,7 +266,7 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 
 				tokenInputElement = textComponent.inputEl;
 
-				// Показываем текущий статус токена при загрузке
+				// Show current token status on load
 				if (this.plugin.settings.apiToken.trim() !== "") {
 					this.updateTokenValidationIndicator(
 						textComponent.inputEl,
@@ -352,12 +328,11 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Секция настроек изображений
+		// Images settings section
 		new Setting(containerEl)
 			.setName(t("settings.imagesHeading"))
 			.setHeading();
 
-		// Включить локальное сохранение изображений
 		new Setting(containerEl)
 			.setName(t("settings.saveImagesLocally"))
 			.setDesc(t("settings.saveImagesLocallyDesc"))
@@ -367,13 +342,12 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						this.plugin.settings.saveImagesLocally = value;
 						await this.plugin.saveSettings();
-						this.display(); // Перерисовываем для показа/скрытия зависимых настроек
+						this.display(); // Redraw to show/hide dependent settings
 					})
 			);
 
-		// Показываем дополнительные настройки только если включено локальное сохранение
+		// Show additional settings only if local saving is enabled
 		if (this.plugin.settings.saveImagesLocally) {
-			// Папка для изображений
 			this.createFolderSetting(
 				containerEl,
 				t("settings.imagesFolder"),
@@ -386,7 +360,6 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 				}
 			);
 
-			// Настройки для конкретных типов изображений
 			new Setting(containerEl)
 				.setName(t("settings.savePosterImage"))
 				.setDesc(t("settings.savePosterImageDesc"))
@@ -424,12 +397,11 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 				);
 		}
 
-		// Секция настроек для фильмов
+		// Movies settings section
 		new Setting(containerEl)
 			.setName(t("settings.moviesHeading"))
 			.setHeading();
 
-		// Формат имени файла для фильмов
 		new Setting(containerEl)
 			.setName(t("settings.movieFileName"))
 			.setDesc(t("settings.movieFileNameDesc"))
@@ -443,7 +415,6 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Папка для файлов фильмов
 		this.createFolderSetting(
 			containerEl,
 			t("settings.movieFileLocation"),
@@ -456,7 +427,6 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 			}
 		);
 
-		// Файл шаблона для фильмов
 		const movieTemplateFileDesc = document.createDocumentFragment();
 		movieTemplateFileDesc.createDiv({
 			text: t("settings.movieTemplateFileDesc"),
@@ -478,12 +448,11 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 			}
 		);
 
-		// Секция настроек для сериалов
+		// Series settings section
 		new Setting(containerEl)
 			.setName(t("settings.seriesHeading"))
 			.setHeading();
 
-		// Формат имени файла для сериалов
 		new Setting(containerEl)
 			.setName(t("settings.seriesFileName"))
 			.setDesc(t("settings.seriesFileNameDesc"))
@@ -497,7 +466,6 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 					})
 			);
 
-		// Папка для файлов сериалов
 		this.createFolderSetting(
 			containerEl,
 			t("settings.seriesFileLocation"),
@@ -510,7 +478,6 @@ export class ObsidianKinopoiskSettingTab extends PluginSettingTab {
 			}
 		);
 
-		// Файл шаблона для сериалов
 		const seriesTemplateFileDesc = document.createDocumentFragment();
 		seriesTemplateFileDesc.createDiv({
 			text: t("settings.seriesTemplateFileDesc"),

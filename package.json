@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-kinopoisk-search-plus-plugin",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Helps you find movies and tv shows via Kinopoisk and create notes.",
 	"main": "main.js",
 	"scripts": {

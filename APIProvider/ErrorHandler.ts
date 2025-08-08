@@ -1,12 +1,12 @@
 /**
  * ErrorHandler.ts
  *
- * Централизованная обработка ошибок API Кинопоиска
+ * Centralized error handling for Kinopoisk API
  */
 
 import { t, tWithParams } from "../i18n";
 
-// Паттерны для определения сетевых ошибок
+// Network error detection patterns
 const NETWORK_ERROR_PATTERNS = [
 	"net::",
 	"NetworkError",
@@ -16,9 +16,6 @@ const NETWORK_ERROR_PATTERNS = [
 	"ETIMEDOUT",
 ] as const;
 
-/**
- * Интерфейс для стандартизации ошибок
- */
 interface ApiErrorDetails {
 	status: number;
 	message: string;
@@ -26,12 +23,9 @@ interface ApiErrorDetails {
 	originalError?: unknown;
 }
 
-/**
- * Класс для обработки ошибок API
- */
 export class ErrorHandler {
 	/**
-	 * Получает сообщение об ошибке для HTTP статуса
+	 * Returns localized error message for HTTP status code
 	 */
 	private getHttpStatusMessage(status: number): string {
 		const statusMessages: Record<number, string> = {
@@ -50,7 +44,7 @@ export class ErrorHandler {
 	}
 
 	/**
-	 * Обрабатывает ошибки от API и создает понятные сообщения
+	 * Processes API errors and creates user-friendly error messages
 	 */
 	public handleApiError(error: unknown): Error {
 		const errorDetails = this.extractErrorDetails(error);
@@ -64,7 +58,7 @@ export class ErrorHandler {
 			return new Error(knownMessage);
 		}
 
-		// Для неизвестных статусов
+		// Unknown status codes
 		if (errorDetails.status > 0) {
 			return new Error(
 				tWithParams("errorHandler.unknownStatusError", {
@@ -73,12 +67,11 @@ export class ErrorHandler {
 			);
 		}
 
-		// Общая ошибка
 		return new Error(t("errorHandler.unexpectedError"));
 	}
 
 	/**
-	 * Извлекает детали ошибки из различных форматов
+	 * Extracts error details from various error formats
 	 */
 	private extractErrorDetails(error: unknown): ApiErrorDetails {
 		const details: ApiErrorDetails = {
@@ -88,21 +81,15 @@ export class ErrorHandler {
 			originalError: error,
 		};
 
-		// Проверяем на сетевую ошибку
 		if (this.isNetworkError(error)) {
 			details.isNetworkError = true;
 			return details;
 		}
 
-		// Извлекаем статус код
 		details.status = this.extractStatusCode(error);
-
 		return details;
 	}
 
-	/**
-	 * Проверяет, является ли ошибка сетевой
-	 */
 	private isNetworkError(error: unknown): boolean {
 		if (!(error instanceof Error)) {
 			return false;
@@ -114,19 +101,19 @@ export class ErrorHandler {
 	}
 
 	/**
-	 * Извлекает HTTP статус код из объекта ошибки
+	 * Extracts HTTP status code from error object
 	 */
 	private extractStatusCode(error: unknown): number {
 		if (!error || typeof error !== "object") {
 			return 0;
 		}
 
-		// Проверяем прямое свойство status
+		// Check direct status property
 		if ("status" in error && typeof error.status === "number") {
 			return error.status;
 		}
 
-		// Проверяем вложенное свойство response.status
+		// Check nested response.status
 		if (
 			"response" in error &&
 			error.response &&
@@ -137,7 +124,7 @@ export class ErrorHandler {
 			return error.response.status;
 		}
 
-		// Проверяем другие возможные структуры
+		// Check alternative statusCode property
 		if ("statusCode" in error && typeof error.statusCode === "number") {
 			return error.statusCode;
 		}
@@ -145,9 +132,6 @@ export class ErrorHandler {
 		return 0;
 	}
 
-	/**
-	 * Логирует ошибку
-	 */
 	public logError(context: string, error: unknown): void {
 		console.error(`[${context}] Error:`, error);
 	}

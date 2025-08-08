@@ -2,12 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),  
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] – 2025-08-08
 
--   Planned improvements and fixes will be listed here in future updates.
+### Added
+
+-   Minor improvements that do not affect the plugin's functionality.
+
+### Notes
+
+This is the first **stable** release of the plugin, fully ready for everyday use!
 
 ## [0.1.0] – 2025-08-08
 
@@ -24,8 +30,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This is the first **stable test release**. It is safe to use, but still under **active development**.  
 Some features may change or be added in future updates.
 
-👉 Found a bug or have feedback? Open an issue here:  
-[GitHub Issues](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/issues)
-
-[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.1...HEAD
+[1.0.0]: https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/tag/v1.0.0
 [0.1.0]: https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/tag/v0.1.0

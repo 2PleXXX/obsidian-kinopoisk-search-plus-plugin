@@ -1,9 +1,9 @@
 /**
  * imageUtils.ts
  *
- * Утилиты для скачивания и сохранения изображений локально.
- * Обрабатывает загрузку изображений по URL и сохранение их в указанную папку
- * с уникальными именами файлов.
+ * Utilities for downloading and saving images locally.
+ * Handles image downloading from URLs and saving them to specified folder
+ * with unique file names.
  */
 
 import { App, Notice, normalizePath, requestUrl } from "obsidian";
@@ -12,25 +12,16 @@ import { replaceIllegalFileNameCharactersInString } from "./utils";
 import { ObsidianKinopoiskPluginSettings } from "Settings/settings";
 import { t, tWithParams } from "../i18n";
 
-/**
- * Интерфейс для callback функции прогресса
- */
 export interface ProgressCallback {
 	(current: number, total: number, currentTask: string): void;
 }
 
-/**
- * Конфигурация для скачивания изображений
- */
 const DOWNLOAD_CONFIG = {
-	timeout: 10000, // 10 секунд таймаут
-	maxRetries: 2, // максимум 2 попытки
-	retryDelay: 1000, // задержка между попытками в мс
+	timeout: 10000, // 10 seconds timeout
+	maxRetries: 2, // maximum 2 attempts
+	retryDelay: 1000, // delay between attempts in ms
 };
 
-/**
- * Поддерживаемые расширения изображений
- */
 const SUPPORTED_EXTENSIONS = [
 	"jpg",
 	"jpeg",
@@ -41,9 +32,6 @@ const SUPPORTED_EXTENSIONS = [
 	"bmp",
 ];
 
-/**
- * Маппинг MIME типов на расширения файлов
- */
 const MIME_TO_EXTENSION_MAP: { [key: string]: string } = {
 	"image/jpeg": "jpg",
 	"image/jpg": "jpg",
@@ -55,7 +43,7 @@ const MIME_TO_EXTENSION_MAP: { [key: string]: string } = {
 };
 
 /**
- * Проверяет, является ли URL валидным для изображения
+ * Checks if URL is valid for image downloading
  */
 function isValidImageUrl(url: string): boolean {
 	if (!url || url.trim() === "") return false;
@@ -69,26 +57,26 @@ function isValidImageUrl(url: string): boolean {
 }
 
 /**
- * Получает расширение файла из MIME типа или URL
+ * Gets file extension from MIME type or URL
  */
 function getImageExtension(url: string, mimeType?: string): string {
-	// Сначала проверяем MIME тип (более надежно)
+	// Check MIME type first (more reliable)
 	if (mimeType && MIME_TO_EXTENSION_MAP[mimeType]) {
 		return MIME_TO_EXTENSION_MAP[mimeType];
 	}
 
-	// Потом пытаемся из URL
+	// Try to extract from URL
 	const urlExtension = url.split(".").pop()?.toLowerCase();
 	if (urlExtension && SUPPORTED_EXTENSIONS.includes(urlExtension)) {
 		return urlExtension;
 	}
 
-	// По умолчанию используем jpg
+	// Default to jpg
 	return "jpg";
 }
 
 /**
- * Создает уникальное имя файла для изображения
+ * Creates unique filename for image
  */
 function createImageFileName(
 	movieShow: MovieShow,
@@ -101,7 +89,7 @@ function createImageFileName(
 }
 
 /**
- * Проверяет, является ли ошибка сетевой проблемой
+ * Checks if error is a network-related issue
  */
 function isNetworkError(error: unknown): boolean {
 	if (
@@ -128,7 +116,7 @@ function isNetworkError(error: unknown): boolean {
 }
 
 /**
- * Создает промис с таймаутом
+ * Creates promise with timeout
  */
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
 	const timeoutPromise = new Promise<never>((_, reject) => {
@@ -142,20 +130,16 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
 	return Promise.race([promise, timeoutPromise]);
 }
 
-/**
- * Задержка между попытками
- */
 function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
- * Скачивает изображение по URL с поддержкой таймаутов и повторных попыток
+ * Downloads image from URL with timeout and retry support
  */
 async function downloadImage(
 	url: string
 ): Promise<{ data: ArrayBuffer; mimeType?: string }> {
-	// Проверяем валидность URL
 	if (!isValidImageUrl(url)) {
 		throw new Error(tWithParams("images.invalidUrl", { url }));
 	}
@@ -176,7 +160,7 @@ async function downloadImage(
 				DOWNLOAD_CONFIG.timeout
 			);
 
-			// Более детальная проверка статуса ответа
+			// Check response status
 			if (response.status !== 200) {
 				if (response.status === 404) {
 					throw new Error(
@@ -214,7 +198,7 @@ async function downloadImage(
 				error
 			);
 
-			// Если это последняя попытка или не сетевая ошибка, не пытаемся снова
+			// Don't retry if it's the last attempt or non-network error
 			if (
 				attempt === DOWNLOAD_CONFIG.maxRetries ||
 				!isNetworkError(error)
@@ -222,7 +206,7 @@ async function downloadImage(
 				break;
 			}
 
-			// Задержка перед следующей попыткой
+			// Delay before next attempt
 			if (attempt < DOWNLOAD_CONFIG.maxRetries) {
 				await delay(DOWNLOAD_CONFIG.retryDelay);
 			}
@@ -237,7 +221,7 @@ async function downloadImage(
 }
 
 /**
- * Сохраняет изображение в локальное хранилище
+ * Saves image to local vault storage
  */
 async function saveImageToVault(
 	app: App,
@@ -247,16 +231,16 @@ async function saveImageToVault(
 ): Promise<string> {
 	const { vault } = app;
 
-	// Убеждаемся, что папка существует
+	// Ensure folder exists
 	const normalizedFolderPath = normalizePath(folderPath);
 	if (!vault.getAbstractFileByPath(normalizedFolderPath)) {
 		await vault.createFolder(normalizedFolderPath);
 	}
 
-	// Создаем полный путь к файлу
+	// Create full file path
 	const fullPath = normalizePath(`${folderPath}/${fileName}`);
 
-	// Проверяем, не существует ли уже файл с таким названием
+	// Handle file name conflicts by adding counter
 	let finalPath = fullPath;
 	let counter = 1;
 	while (vault.getAbstractFileByPath(finalPath)) {
@@ -267,14 +251,12 @@ async function saveImageToVault(
 		counter++;
 	}
 
-	// Сохраняем файл
 	await vault.createBinary(finalPath, imageData);
-
 	return finalPath;
 }
 
 /**
- * Скачивает и сохраняет изображение, возвращает локальный путь
+ * Downloads and saves image, returns local path
  */
 export async function downloadAndSaveImage(
 	app: App,
@@ -284,21 +266,14 @@ export async function downloadAndSaveImage(
 	folderPath: string
 ): Promise<string> {
 	try {
-		// Если это не HTTP/HTTPS URL, просто возвращаем его
+		// Return URL as-is if it's not HTTP/HTTPS
 		if (!isValidImageUrl(url)) {
 			return url;
 		}
 
-		// Скачиваем изображение
 		const { data, mimeType } = await downloadImage(url);
-
-		// Определяем расширение файла
 		const extension = getImageExtension(url, mimeType);
-
-		// Создаем имя файла
 		const fileName = createImageFileName(movieShow, imageType, extension);
-
-		// Сохраняем в хранилище
 		const localPath = await saveImageToVault(
 			app,
 			data,
@@ -314,24 +289,23 @@ export async function downloadAndSaveImage(
 }
 
 /**
- * Создает ссылку на изображение для Obsidian в зависимости от типа пути
+ * Creates Obsidian image link based on path type
  */
 function createImageLink(imagePath: string): string[] {
 	if (!imagePath || imagePath.trim() === "") return [];
 
-	// Если это локальный путь, используем wiki-ссылки без пути (только имя файла)
+	// For local paths, use wiki-links with filename only
 	if (!imagePath.startsWith("http")) {
-		// Извлекаем только имя файла из полного пути
 		const fileName = imagePath.split("/").pop() || imagePath;
 		return [`![[${fileName}]]`];
 	}
 
-	// Если это веб-ссылка, используем формат ![](url)
+	// For web URLs, use markdown format
 	return [`![](${imagePath})`];
 }
 
 /**
- * Подсчитывает общее количество изображений для скачивания
+ * Counts total images to download based on settings
  */
 function countImagesToDownload(
 	movieShow: MovieShow,
@@ -342,7 +316,6 @@ function countImagesToDownload(
 ): number {
 	let count = 0;
 
-	// Считаем постер, если он есть и это валидный HTTP URL
 	if (
 		settings.savePosterImage &&
 		movieShow.posterUrl.length > 0 &&
@@ -352,7 +325,6 @@ function countImagesToDownload(
 		count++;
 	}
 
-	// Считаем обложку, если она есть и это валидный HTTP URL
 	if (
 		settings.saveCoverImage &&
 		movieShow.coverUrl.length > 0 &&
@@ -362,7 +334,6 @@ function countImagesToDownload(
 		count++;
 	}
 
-	// Считаем логотип, если он есть и это валидный HTTP URL
 	if (
 		settings.saveLogoImage &&
 		movieShow.logoUrl.length > 0 &&
@@ -375,15 +346,12 @@ function countImagesToDownload(
 	return count;
 }
 
-/**
- * Получает читаемое название типа изображения
- */
 function getImageTypeDisplayName(imageType: string): string {
 	return t(`images.${imageType}`);
 }
 
 /**
- * Обрабатывает все изображения для фильма/сериала согласно настройкам
+ * Processes all images for movie/show according to settings
  */
 export async function processImages(
 	app: App,
@@ -398,27 +366,24 @@ export async function processImages(
 	>,
 	progressCallback?: ProgressCallback
 ): Promise<MovieShow> {
-	// Если локальное сохранение отключено, возвращаем оригинальные данные
+	// Return original data if local saving is disabled
 	if (!settings.saveImagesLocally) {
 		return movieShow;
 	}
 
 	const updatedMovieShow = { ...movieShow };
-
-	// Подсчитываем общее количество изображений для скачивания
 	const totalImages = countImagesToDownload(movieShow, settings);
 	let processedImages = 0;
 	let successfulDownloads = 0;
 	let failedDownloads = 0;
 
-	// Если нет изображений для скачивания, возвращаем оригинальные данные
 	if (totalImages === 0) {
 		progressCallback?.(0, 0, t("images.noImagesToDownload"));
 		return movieShow;
 	}
 
 	try {
-		// Обрабатываем постер
+		// Process poster
 		if (
 			settings.savePosterImage &&
 			movieShow.posterUrl.length > 0 &&
@@ -426,7 +391,6 @@ export async function processImages(
 		) {
 			const posterUrl = movieShow.posterUrl[0];
 
-			// Проверяем, является ли это валидным HTTP URL
 			if (isValidImageUrl(posterUrl)) {
 				const imageTypeName = getImageTypeDisplayName("poster");
 				progressCallback?.(
@@ -452,7 +416,6 @@ export async function processImages(
 					processedImages++;
 					failedDownloads++;
 
-					// Логируем ошибки, но не показываем Notice здесь
 					if (isNetworkError(error)) {
 						console.warn(t("images.posterUnavailable"));
 					} else {
@@ -460,17 +423,17 @@ export async function processImages(
 							`${t("images.downloadError")} ${t("images.poster")}`
 						);
 					}
-					// Оставляем оригинальный URL если скачивание не удалось
+					// Keep original URL if download failed
 					updatedMovieShow.posterImageLink =
 						createImageLink(posterUrl);
 				}
 			} else {
-				// Уже локальный файл, создаем ссылку
+				// Already local file, create link
 				updatedMovieShow.posterImageLink = createImageLink(posterUrl);
 			}
 		}
 
-		// Обрабатываем задник/фон
+		// Process cover/background
 		if (
 			settings.saveCoverImage &&
 			movieShow.coverUrl.length > 0 &&
@@ -510,7 +473,6 @@ export async function processImages(
 							`${t("images.downloadError")} ${t("images.cover")}`
 						);
 					}
-					// Оставляем оригинальный URL если скачивание не удалось
 					updatedMovieShow.coverImageLink = createImageLink(coverUrl);
 				}
 			} else {
@@ -518,7 +480,7 @@ export async function processImages(
 			}
 		}
 
-		// Обрабатываем логотип
+		// Process logo
 		if (
 			settings.saveLogoImage &&
 			movieShow.logoUrl.length > 0 &&
@@ -557,7 +519,6 @@ export async function processImages(
 							`${t("images.downloadError")} ${t("images.logo")}`
 						);
 					}
-					// Оставляем оригинальный URL если скачивание не удалось
 					updatedMovieShow.logoImageLink = createImageLink(logoUrl);
 				}
 			} else {
@@ -565,7 +526,7 @@ export async function processImages(
 			}
 		}
 
-		// Финальный callback с результатами
+		// Final callback with results
 		if (progressCallback) {
 			if (failedDownloads > 0) {
 				progressCallback(
@@ -591,7 +552,7 @@ export async function processImages(
 			}
 		}
 
-		// Показываем Notice только если были ошибки
+		// Show Notice only if there were errors
 		if (failedDownloads > 0) {
 			if (successfulDownloads > 0) {
 				new Notice(

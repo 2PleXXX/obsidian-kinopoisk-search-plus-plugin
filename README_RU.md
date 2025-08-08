@@ -380,7 +380,7 @@ director: [{{director}}]
 **Вариант 2:** Скачайте архив хранилища напрямую
 
 -   [Клонировать репозиторий](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin)
--   [Скачать архив примера хранилища](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v0.1.0/Example.Vault.rar)
+-   [Скачать архив примера хранилища](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v1.0.0/Example.Vault.rar)
 
 # Лицензия
 

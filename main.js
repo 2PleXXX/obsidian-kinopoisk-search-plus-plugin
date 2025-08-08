@@ -58,7 +58,6 @@ var ru = {
     errorMovieData: "\u041E\u0448\u0438\u0431\u043A\u0430: \u043D\u0435\u0432\u0435\u0440\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u0444\u0438\u043B\u044C\u043C\u0430",
     errorUnexpected: "\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u0430\u044F \u043E\u0448\u0438\u0431\u043A\u0430",
     errorGettingDetails: "\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u0430\u044F \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u0438 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u0438 \u043E \u0444\u0438\u043B\u044C\u043C\u0435",
-    // Новые строки из suggest_modal.ts
     posterPlaceholderEmoji: "\u{1F4FD}\uFE0F",
     posterTooltipGeoblock: "\u041F\u043E\u0441\u0442\u0435\u0440 \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u0435\u043D (\u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E, \u0433\u0435\u043E\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0430)",
     posterTooltipMissing: "\u041F\u043E\u0441\u0442\u0435\u0440 \u043E\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442",
@@ -175,7 +174,6 @@ var ru = {
     seriesTemplateFile: "\u0424\u0430\u0439\u043B \u0448\u0430\u0431\u043B\u043E\u043D\u0430 \u0434\u043B\u044F \u0441\u0435\u0440\u0438\u0430\u043B\u043E\u0432",
     seriesTemplateFileDesc: "\u0424\u0430\u0439\u043B\u044B \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B \u043A\u0430\u043A \u0448\u0430\u0431\u043B\u043E\u043D\u044B.",
     seriesTemplateFilePlaceholder: "\u041D\u0430\u043F\u0440\u0438\u043C\u0435\u0440: templates/template-file",
-    languageHeading: "\u042F\u0437\u044B\u043A",
     language: "\u042F\u0437\u044B\u043A \u0438\u043D\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430",
     languageDesc: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u044F\u0437\u044B\u043A \u0438\u043D\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430 \u043F\u043B\u0430\u0433\u0438\u043D\u0430."
   }
@@ -202,7 +200,6 @@ var en = {
     errorMovieData: "Error: invalid movie data",
     errorUnexpected: "An unexpected error occurred",
     errorGettingDetails: "An unexpected error occurred while getting movie information",
-    // Новые строки из suggest_modal.ts
     posterPlaceholderEmoji: "\u{1F4FD}\uFE0F",
     posterTooltipGeoblock: "Poster unavailable (possibly geo-blocked)",
     posterTooltipMissing: "Poster missing",
@@ -319,7 +316,6 @@ var en = {
     seriesTemplateFile: "TV series template file",
     seriesTemplateFileDesc: "Files will be available as templates.",
     seriesTemplateFilePlaceholder: "Example: templates/template-file",
-    languageHeading: "Language",
     language: "Interface language",
     languageDesc: "Select the plugin interface language."
   }
@@ -386,7 +382,7 @@ var NETWORK_ERROR_PATTERNS = [
 ];
 var ErrorHandler = class {
   /**
-   * Получает сообщение об ошибке для HTTP статуса
+   * Returns localized error message for HTTP status code
    */
   getHttpStatusMessage(status) {
     const statusMessages = {
@@ -403,7 +399,7 @@ var ErrorHandler = class {
     return statusMessages[status] || "";
   }
   /**
-   * Обрабатывает ошибки от API и создает понятные сообщения
+   * Processes API errors and creates user-friendly error messages
    */
   handleApiError(error) {
     const errorDetails = this.extractErrorDetails(error);
@@ -424,7 +420,7 @@ var ErrorHandler = class {
     return new Error(t("errorHandler.unexpectedError"));
   }
   /**
-   * Извлекает детали ошибки из различных форматов
+   * Extracts error details from various error formats
    */
   extractErrorDetails(error) {
     const details = {
@@ -440,9 +436,6 @@ var ErrorHandler = class {
     details.status = this.extractStatusCode(error);
     return details;
   }
-  /**
-   * Проверяет, является ли ошибка сетевой
-   */
   isNetworkError(error) {
     if (!(error instanceof Error)) {
       return false;
@@ -452,7 +445,7 @@ var ErrorHandler = class {
     );
   }
   /**
-   * Извлекает HTTP статус код из объекта ошибки
+   * Extracts HTTP status code from error object
    */
   extractStatusCode(error) {
     if (!error || typeof error !== "object") {
@@ -469,9 +462,6 @@ var ErrorHandler = class {
     }
     return 0;
   }
-  /**
-   * Логирует ошибку
-   */
   logError(context, error) {
     console.error(`[${context}] Error:`, error);
   }
@@ -714,7 +704,7 @@ var HTML_ENTITIES = {
 };
 var DataFormatter = class {
   /**
-   * Основной метод преобразования данных API в формат MovieShow
+   * Transforms API data into MovieShow format
    */
   createMovieShowFrom(fullInfo) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F, _G, _H, _I, _J, _K, _L, _M;
@@ -725,7 +715,7 @@ var DataFormatter = class {
     const names = this.processNames(fullInfo);
     const firstReleaseYear = (_a = fullInfo.releaseYears) == null ? void 0 : _a[0];
     const item = {
-      // Основная информация
+      // Basic information
       id: fullInfo.id,
       name: this.formatArray([fullInfo.name], "short" /* SHORT_VALUE */),
       alternativeName: this.formatArray(
@@ -741,13 +731,13 @@ var DataFormatter = class {
         [fullInfo.shortDescription || ""],
         "long" /* LONG_TEXT */
       ),
-      // Дополнительные свойства для имен файлов
+      // Additional properties for filenames
       nameForFile: this.cleanTextForMetadata(fullInfo.name),
       alternativeNameForFile: this.cleanTextForMetadata(
         fullInfo.alternativeName || ""
       ),
       enNameForFile: this.cleanTextForMetadata(fullInfo.enName || ""),
-      // Изображения
+      // Images
       posterUrl: this.formatArray(
         [((_b = fullInfo.poster) == null ? void 0 : _b.url) || ""],
         "url" /* URL */
@@ -760,11 +750,11 @@ var DataFormatter = class {
         [((_d = fullInfo.logo) == null ? void 0 : _d.url) || ""],
         "url" /* URL */
       ),
-      // Готовые ссылки на изображения для Obsidian
+      // Ready-to-use image links for Obsidian
       posterImageLink: this.createImageLink(((_e = fullInfo.poster) == null ? void 0 : _e.url) || ""),
       coverImageLink: this.createImageLink(((_f = fullInfo.backdrop) == null ? void 0 : _f.url) || ""),
       logoImageLink: this.createImageLink(((_g = fullInfo.logo) == null ? void 0 : _g.url) || ""),
-      // Классификация
+      // Classification
       genres: this.formatArray(
         fullInfo.genres.map((g) => capitalizeFirstLetter(g.name)),
         "short" /* SHORT_VALUE */
@@ -789,7 +779,7 @@ var DataFormatter = class {
         [fullInfo.subType || ""],
         "short" /* SHORT_VALUE */
       ),
-      // Люди
+      // People
       director: this.formatArray(
         people.directors,
         "short" /* SHORT_VALUE */
@@ -804,7 +794,7 @@ var DataFormatter = class {
         "short" /* SHORT_VALUE */
       ),
       producersLinks: this.formatArray(people.producers, "link" /* LINK */),
-      // Технические характеристики
+      // Technical specifications
       movieLength: fullInfo.movieLength || 0,
       isSeries: fullInfo.isSeries,
       seriesLength: fullInfo.seriesLength || 0,
@@ -812,7 +802,7 @@ var DataFormatter = class {
       isComplete: (fullInfo.status || "") === "completed",
       seasonsCount: seasonsData.count,
       seriesInSeasonCount: seasonsData.averageEpisodesPerSeason,
-      // Рейтинги и голоса
+      // Ratings and votes
       ratingKp: ((_h = fullInfo.rating) == null ? void 0 : _h.kp) || 0,
       ratingImdb: ((_i = fullInfo.rating) == null ? void 0 : _i.imdb) || 0,
       ratingFilmCritics: ((_j = fullInfo.rating) == null ? void 0 : _j.filmCritics) || 0,
@@ -821,7 +811,7 @@ var DataFormatter = class {
       votesImdb: ((_m = fullInfo.votes) == null ? void 0 : _m.imdb) || 0,
       votesFilmCritics: ((_n = fullInfo.votes) == null ? void 0 : _n.filmCritics) || 0,
       votesRussianFilmCritics: ((_o = fullInfo.votes) == null ? void 0 : _o.russianFilmCritics) || 0,
-      // Внешние идентификаторы и ссылки
+      // External IDs and links
       kinopoiskUrl: this.formatArray(
         [`https://www.kinopoisk.ru/film/${fullInfo.id}/`],
         "url" /* URL */
@@ -835,7 +825,7 @@ var DataFormatter = class {
         [((_r = fullInfo.externalId) == null ? void 0 : _r.kpHD) || ""],
         "short" /* SHORT_VALUE */
       ),
-      // Дополнительная информация
+      // Additional information
       slogan: this.formatArray(
         [fullInfo.slogan || ""],
         "long" /* LONG_TEXT */
@@ -845,7 +835,7 @@ var DataFormatter = class {
         [fullInfo.ratingMpaa || ""],
         "short" /* SHORT_VALUE */
       ),
-      // Финансы
+      // Financial data
       budgetValue: ((_s = fullInfo.budget) == null ? void 0 : _s.value) || 0,
       budgetCurrency: this.formatArray(
         [((_t = fullInfo.budget) == null ? void 0 : _t.currency) || ""],
@@ -866,7 +856,7 @@ var DataFormatter = class {
         [((_F = (_E = fullInfo.fees) == null ? void 0 : _E.usa) == null ? void 0 : _F.currency) || ""],
         "short" /* SHORT_VALUE */
       ),
-      // Даты премьер
+      // Premiere dates
       premiereWorld: this.formatArray(
         [this.formatDate((_G = fullInfo.premiere) == null ? void 0 : _G.world)],
         "short" /* SHORT_VALUE */
@@ -883,15 +873,15 @@ var DataFormatter = class {
         [this.formatDate((_J = fullInfo.premiere) == null ? void 0 : _J.cinema)],
         "short" /* SHORT_VALUE */
       ),
-      // Периоды выпуска
+      // Release years
       releaseYearsStart: (firstReleaseYear == null ? void 0 : firstReleaseYear.start) || 0,
       releaseYearsEnd: (firstReleaseYear == null ? void 0 : firstReleaseYear.end) || 0,
-      // Рейтинги в топах
+      // Top ratings
       top10: fullInfo.top10 || 0,
       top250: fullInfo.top250 || 0,
-      // Факты
+      // Facts
       facts: this.formatArray(facts, "long" /* LONG_TEXT */),
-      // Альтернативные названия
+      // Alternative names
       allNamesString: this.formatArray(
         names.allNames,
         "short" /* SHORT_VALUE */
@@ -900,7 +890,7 @@ var DataFormatter = class {
         [fullInfo.enName || ""],
         "short" /* SHORT_VALUE */
       ),
-      // Сети и компании
+      // Networks and companies
       networks: this.formatArray(
         companies.networks,
         "short" /* SHORT_VALUE */
@@ -917,7 +907,7 @@ var DataFormatter = class {
         companies.productionCompanies,
         "link" /* LINK */
       ),
-      // Дистрибьюторы
+      // Distributors
       distributor: this.formatArray(
         [((_K = fullInfo.distributors) == null ? void 0 : _K.distributor) || ""],
         "short" /* SHORT_VALUE */
@@ -930,7 +920,7 @@ var DataFormatter = class {
         ],
         "short" /* SHORT_VALUE */
       ),
-      // Связанные фильмы/сериалы
+      // Related movies/series
       sequelsAndPrequels: this.formatArray(
         companies.sequelsAndPrequels,
         "short" /* SHORT_VALUE */
@@ -943,7 +933,7 @@ var DataFormatter = class {
     return item;
   }
   /**
-   * Универсальное форматирование массивов в зависимости от типа
+   * Universal array formatting based on type
    */
   formatArray(items, formatType, maxItems = MAX_ARRAY_ITEMS) {
     const filteredItems = items.filter((item) => item && item.trim() !== "").slice(0, maxItems);
@@ -968,7 +958,7 @@ var DataFormatter = class {
     }
   }
   /**
-   * Вычисляет данные о сезонах
+   * Calculates seasons data from seasons info
    */
   calculateSeasonsData(seasonsInfo) {
     if (!seasonsInfo || seasonsInfo.length === 0) {
@@ -985,7 +975,7 @@ var DataFormatter = class {
     };
   }
   /**
-   * Извлекает людей по профессиям
+   * Extracts people by profession from persons array
    */
   extractPeople(persons) {
     const result = {
@@ -1014,7 +1004,7 @@ var DataFormatter = class {
     return result;
   }
   /**
-   * Извлекает компании и связанные фильмы
+   * Extracts companies and related movies from API response
    */
   extractCompanies(fullInfo) {
     var _a, _b, _c, _d;
@@ -1024,23 +1014,20 @@ var DataFormatter = class {
     return { networks, productionCompanies, sequelsAndPrequels };
   }
   /**
-   * Обрабатывает факты (удаляет спойлеры и HTML)
+   * Processes facts by removing spoilers and HTML tags
    */
   processFacts(facts) {
     return facts.filter(
       (fact) => !fact.spoiler && fact.value && fact.value.trim() !== ""
     ).slice(0, MAX_FACTS_COUNT).map((fact) => this.stripHtmlTags(fact.value));
   }
-  /**
-   * Обрабатывает названия
-   */
   processNames(fullInfo) {
     var _a;
     const allNames = ((_a = fullInfo.names) == null ? void 0 : _a.map((nameObj) => nameObj.name).filter((name) => name && name.trim() !== "")) || [];
     return { allNames };
   }
   /**
-   * Форматирует дату в формат Obsidian (YYYY-MM-DD)
+   * Formats date to Obsidian format (YYYY-MM-DD)
    */
   formatDate(dateString) {
     if (!dateString) return "";
@@ -1055,14 +1042,14 @@ var DataFormatter = class {
     }
   }
   /**
-   * Очищает текст от символов, которые могут нарушить метаданные
+   * Cleans text from characters that might break metadata
    */
   cleanTextForMetadata(text) {
     if (!text) return "";
     return text.replace(/:/g, "").trim();
   }
   /**
-   * Создает ссылку на изображение для Obsidian
+   * Creates image link for Obsidian format
    */
   createImageLink(imagePath) {
     if (!imagePath || imagePath.trim() === "") return [];
@@ -1071,14 +1058,11 @@ var DataFormatter = class {
     }
     return [`![](${imagePath})`];
   }
-  /**
-   * Переводит типы контента на русский язык
-   */
   translateType(type) {
     return TYPE_TRANSLATIONS[type] || type;
   }
   /**
-   * Удаляет HTML теги и декодирует HTML сущности
+   * Removes HTML tags and decodes HTML entities
    */
   stripHtmlTags(text) {
     let cleanText = text.replace(/<[^>]*>/g, "");
@@ -1099,7 +1083,7 @@ var MIN_MOVIE_ID = 1;
 var MAX_MOVIE_ID = 99999999;
 var ApiValidator = class {
   /**
-   * Проверяет валидность API токена
+   * Validates API token format and length
    */
   isValidToken(token) {
     if (typeof token !== "string") {
@@ -1119,7 +1103,7 @@ var ApiValidator = class {
     return true;
   }
   /**
-   * Проверяет валидность поискового запроса
+   * Validates search query for safety and length
    */
   isValidSearchQuery(query) {
     if (typeof query !== "string") {
@@ -1145,7 +1129,7 @@ var ApiValidator = class {
     return true;
   }
   /**
-   * Проверяет валидность ID фильма
+   * Validates movie ID range and type
    */
   isValidMovieId(id) {
     if (typeof id !== "number") {
@@ -1163,7 +1147,7 @@ var ApiValidator = class {
     return true;
   }
   /**
-   * Проверяет валидность параметров пагинации
+   * Validates pagination parameters
    */
   isValidPaginationParams(page, limit) {
     if (page !== void 0) {
@@ -1179,19 +1163,19 @@ var ApiValidator = class {
     return true;
   }
   /**
-   * Санитизирует поисковый запрос
+   * Sanitizes search query by removing dangerous characters
    */
   sanitizeQuery(query) {
     return query.trim().replace(/\s+/g, " ").replace(/[<>]/g, "").substring(0, MAX_QUERY_LENGTH);
   }
   /**
-   * Санитизирует токен
+   * Sanitizes token by keeping only allowed characters
    */
   sanitizeToken(token) {
     return token.trim().replace(/[^A-Za-z0-9\-_]/g, "").substring(0, MAX_TOKEN_LENGTH);
   }
   /**
-   * Проверяет общую валидность конфигурации запроса
+   * Validates complete request configuration
    */
   validateRequestConfig(config) {
     const errors = [];
@@ -1224,7 +1208,7 @@ var KinopoiskProvider = class {
     this.validator = new ApiValidator();
   }
   /**
-   * Выполняет HTTP GET запрос к API
+   * Performs HTTP GET request to API
    */
   async apiGet(endpoint, token, params = {}, headers) {
     if (!this.validator.isValidToken(token)) {
@@ -1247,7 +1231,7 @@ var KinopoiskProvider = class {
     }
   }
   /**
-   * Строит URL с параметрами
+   * Builds URL with query parameters
    */
   buildUrl(endpoint, params) {
     const url = new URL(`${API_BASE_URL}${endpoint}`);
@@ -1259,7 +1243,7 @@ var KinopoiskProvider = class {
     return url.href;
   }
   /**
-   * Поиск фильмов и сериалов по запросу
+   * Search for movies and TV shows by query
    */
   async searchByQuery(query, token) {
     if (!this.validator.isValidSearchQuery(query)) {
@@ -1281,7 +1265,7 @@ var KinopoiskProvider = class {
     return searchResults.docs;
   }
   /**
-   * Получает детальную информацию о фильме/сериале
+   * Retrieves detailed movie/TV show information by ID
    */
   async getMovieById(id, token) {
     if (!this.validator.isValidMovieId(id)) {
@@ -1301,7 +1285,7 @@ var KinopoiskProvider = class {
     return movieShow;
   }
   /**
-   * Проверяет валидность API токена
+   * Validates API token by making test request
    */
   async validateToken(token) {
     if (!this.validator.isValidToken(token)) {
@@ -1328,9 +1312,7 @@ var SearchModal = class extends import_obsidian3.Modal {
     this.isBusy = false;
     this.query = "";
     this.token = "";
-    /**
-     * Обработчик нажатия Enter для запуска поиска
-     */
+    // Enter key handler for search
     this.submitEnterCallback = (event) => {
       if (event.key === "Enter" && !event.isComposing) {
         this.search();
@@ -1339,9 +1321,7 @@ var SearchModal = class extends import_obsidian3.Modal {
     this.token = plugin.settings.apiToken;
     this.kinopoiskProvider = new KinopoiskProvider();
   }
-  /**
-   * Управляет состоянием загрузки UI
-   */
+  // Manages UI loading state
   setBusy(busy) {
     var _a, _b, _c;
     this.isBusy = busy;
@@ -1351,9 +1331,7 @@ var SearchModal = class extends import_obsidian3.Modal {
     );
     (_c = this.inputRef) == null ? void 0 : _c.setDisabled(busy);
   }
-  /**
-   * Валидирует входные данные перед поиском
-   */
+  // Validates input before search
   validateInput() {
     var _a, _b;
     if (!((_a = this.query) == null ? void 0 : _a.trim())) {
@@ -1369,17 +1347,13 @@ var SearchModal = class extends import_obsidian3.Modal {
     }
     return true;
   }
-  /**
-   * Обрабатывает ошибки поиска
-   */
+  // Handles search errors
   handleSearchError(error) {
     const errorMessage = error instanceof Error ? error.message : t("modals.errorUnexpected");
     new import_obsidian3.Notice(errorMessage);
     this.callback(error);
   }
-  /**
-   * Выполняет поиск через API Кинопоиска
-   */
+  // Performs search via Kinopoisk API
   async search() {
     if (!this.validateInput()) {
       return;
@@ -1436,11 +1410,11 @@ var import_obsidian5 = require("obsidian");
 var import_obsidian4 = require("obsidian");
 var DOWNLOAD_CONFIG = {
   timeout: 1e4,
-  // 10 секунд таймаут
+  // 10 seconds timeout
   maxRetries: 2,
-  // максимум 2 попытки
+  // maximum 2 attempts
   retryDelay: 1e3
-  // задержка между попытками в мс
+  // delay between attempts in ms
 };
 var SUPPORTED_EXTENSIONS = [
   "jpg",
@@ -1828,18 +1802,14 @@ var ItemsSuggestModal = class extends import_obsidian5.SuggestModal {
     this.token = plugin.settings.apiToken;
     this.kinopoiskProvider = new KinopoiskProvider();
   }
-  /**
-   * Фильтрует список предложений по поисковому запросу
-   */
+  // Filters suggestions by search query
   getSuggestions(query) {
     return this.suggestion.filter((item) => {
       const searchQuery = query == null ? void 0 : query.toLowerCase();
       return item.name.toLowerCase().includes(searchQuery) || item.alternativeName.toLowerCase().includes(searchQuery);
     });
   }
-  /**
-   * Проверяет, является ли URL валидным для изображения
-   */
+  // Validates image URL
   isValidImageUrl(url) {
     if (!url || url.trim() === "") return false;
     try {
@@ -1849,9 +1819,7 @@ var ItemsSuggestModal = class extends import_obsidian5.SuggestModal {
       return false;
     }
   }
-  /**
-   * Создает элемент изображения постера или заглушку
-   */
+  // Creates poster image element or placeholder
   createPosterElement(item, container) {
     var _a;
     const posterUrl = (_a = item.poster) == null ? void 0 : _a.url;
@@ -1879,9 +1847,7 @@ var ItemsSuggestModal = class extends import_obsidian5.SuggestModal {
       return placeholder;
     }
   }
-  /**
-   * Отрисовывает элемент списка с постером и информацией о фильме/сериале
-   */
+  // Renders list item with poster and movie info
   renderSuggestion(item, el) {
     const title = item.name;
     const subtitle = `${item.year}, ${item.alternativeName} (${item.type})`;
@@ -1895,31 +1861,23 @@ var ItemsSuggestModal = class extends import_obsidian5.SuggestModal {
     textInfo.appendChild(el.createEl("div", { text: title }));
     textInfo.appendChild(el.createEl("small", { text: subtitle }));
   }
-  /**
-   * Обрабатывает выбор элемента из списка
-   */
+  // Handles item selection
   onChooseSuggestion(item) {
     this.getItemDetails(item);
   }
-  /**
-   * Управляет отображением уведомлений о загрузке
-   */
+  // Manages loading notice display
   updateStatus(message, persistent = true) {
     this.hideLoadingNotice();
     this.loadingNotice = new import_obsidian5.Notice(message, persistent ? 0 : 3e3);
   }
-  /**
-   * Скрывает уведомление о загрузке, если оно существует
-   */
+  // Hides loading notice
   hideLoadingNotice() {
     if (this.loadingNotice) {
       this.loadingNotice.hide();
       this.loadingNotice = void 0;
     }
   }
-  /**
-   * Обновляет текст существующего уведомления о загрузке
-   */
+  // Updates existing loading notice text
   updateLoadingNotice(message) {
     if (this.loadingNotice) {
       const noticeEl = this.loadingNotice.noticeEl;
@@ -1930,9 +1888,7 @@ var ItemsSuggestModal = class extends import_obsidian5.SuggestModal {
       this.updateStatus(message);
     }
   }
-  /**
-   * Создает прогресс-бар в виде текста с процентами
-   */
+  // Creates progress text with percentage
   createProgressText(current, total, task) {
     if (total === 0) return task;
     const percentage = Math.round(current / total * 100);
@@ -1940,18 +1896,14 @@ var ItemsSuggestModal = class extends import_obsidian5.SuggestModal {
     return `${task}
 ${progressBar} ${current}/${total} (${percentage}%)`;
   }
-  /**
-   * Создает визуальный прогресс-бар из символов
-   */
+  // Creates visual progress bar from characters
   createProgressBar(current, total, length = 20) {
     if (total === 0) return "";
     const filled = Math.round(current / total * length);
     const empty = length - filled;
     return "\u2588".repeat(filled) + "\u2591".repeat(empty);
   }
-  /**
-   * Валидирует входные данные
-   */
+  // Validates input data
   validateInput(item) {
     var _a;
     if (!(item == null ? void 0 : item.id) || item.id <= 0) {
@@ -1966,15 +1918,11 @@ ${progressBar} ${current}/${total} (${percentage}%)`;
     }
     return true;
   }
-  /**
-   * Получает основную информацию о фильме через API
-   */
+  // Fetches movie data via API
   async fetchMovieData(itemId) {
     return await this.kinopoiskProvider.getMovieById(itemId, this.token);
   }
-  /**
-   * Обрабатывает изображения фильма с прогресс-баром
-   */
+  // Processes movie images with progress tracking
   async processMovieImages(movieShow) {
     this.updateLoadingNotice(t("modals.preparingImages"));
     let imageProcessingCompleted = false;
@@ -2000,20 +1948,15 @@ ${progressBar} ${current}/${total} (${percentage}%)`;
     }
     return processedMovieShow;
   }
-  /**
-   * Обрабатывает успешное получение данных фильма
-   */
+  // Handles successful data retrieval
   handleSuccess(movieShow, hadImageProcessing = false) {
     this.hideLoadingNotice();
     if (!hadImageProcessing) {
       new import_obsidian5.Notice(t("modals.movieInfoLoaded"));
-    } else {
     }
     this.onChoose(null, movieShow);
   }
-  /**
-   * Обрабатывает ошибки получения данных фильма
-   */
+  // Handles errors during data retrieval
   handleError(error) {
     this.hideLoadingNotice();
     const errorMessage = error instanceof Error ? error.message : t("modals.errorGettingDetails");
@@ -2021,10 +1964,7 @@ ${progressBar} ${current}/${total} (${percentage}%)`;
     console.error("Error getting movie details:", error);
     this.onChoose(error);
   }
-  /**
-   * Получает детальную информацию о выбранном фильме/сериале через API
-   * с поддержкой локального сохранения изображений и прогресс-бара
-   */
+  // Fetches detailed movie information with image processing and progress tracking
   async getItemDetails(item) {
     if (!this.validateInput(item)) {
       return;
@@ -2042,9 +1982,7 @@ ${progressBar} ${current}/${total} (${percentage}%)`;
       this.handleError(error);
     }
   }
-  /**
-   * Переопределяем метод закрытия для очистки уведомлений
-   */
+  // Clean up notices on close
   onClose() {
     this.hideLoadingNotice();
     super.onClose();
@@ -2062,7 +2000,7 @@ var FolderSuggest = class extends import_obsidian6.AbstractInputSuggest {
     this.onSelectFolder = onSelectFolder;
   }
   /**
-   * Получает список папок, соответствующих введенному тексту
+   * Get folders matching input text
    */
   getSuggestions(inputStr) {
     if (!inputStr) {
@@ -2083,17 +2021,11 @@ var FolderSuggest = class extends import_obsidian6.AbstractInputSuggest {
       return [];
     }
   }
-  /**
-   * Отображает предложение папки в выпадающем списке
-   */
   renderSuggestion(folder, el) {
     if (folder && el) {
       el.setText(folder.path);
     }
   }
-  /**
-   * Обрабатывает выбор папки пользователем
-   */
   selectSuggestion(folder) {
     if (folder && folder.path) {
       this.setValue(folder.path);
@@ -2111,8 +2043,7 @@ var FileSuggest = class extends import_obsidian7.AbstractInputSuggest {
     this.onSelectFile = onSelectFile;
   }
   /**
-   * Получает список файлов, соответствующих введенному тексту
-   * Фильтрует только .md файлы
+   * Get files matching input text - filters only .md files
    */
   getSuggestions(inputStr) {
     if (!inputStr) {
@@ -2133,17 +2064,11 @@ var FileSuggest = class extends import_obsidian7.AbstractInputSuggest {
       return [];
     }
   }
-  /**
-   * Отображает предложение в выпадающем списке
-   */
   renderSuggestion(file, el) {
     if (file && el) {
       el.setText(file.path);
     }
   }
-  /**
-   * Обрабатывает выбор файла пользователем
-   */
   selectSuggestion(file) {
     if (file && file.path) {
       this.setValue(file.path);
@@ -2166,7 +2091,7 @@ var DEFAULT_SETTINGS = {
   seriesFileNameFormat: "",
   seriesFolder: "",
   seriesTemplateFile: "",
-  // Значения по умолчанию для изображений
+  // Image defaults
   imagesFolder: "attachments/kinopoisk",
   saveImagesLocally: false,
   savePosterImage: true,
@@ -2184,9 +2109,6 @@ var ObsidianKinopoiskSettingTab = class extends import_obsidian8.PluginSettingTa
   get settings() {
     return this.plugin.settings;
   }
-  /**
-   * Очистка ресурсов при закрытии настроек
-   */
   onClose() {
     if (this.validationTimeout) {
       clearTimeout(this.validationTimeout);
@@ -2194,7 +2116,7 @@ var ObsidianKinopoiskSettingTab = class extends import_obsidian8.PluginSettingTa
     }
   }
   /**
-   * Обновляет визуальный индикатор валидности токена
+   * Update token validation visual indicator
    */
   updateTokenValidationIndicator(inputElement, isValid) {
     if (!inputElement) return;
@@ -2214,7 +2136,7 @@ var ObsidianKinopoiskSettingTab = class extends import_obsidian8.PluginSettingTa
     }
   }
   /**
-   * Валидирует токен с задержкой
+   * Validate token with delay
    */
   async validateTokenWithDelay(token, inputElement) {
     if (this.validationTimeout) {
@@ -2238,7 +2160,7 @@ var ObsidianKinopoiskSettingTab = class extends import_obsidian8.PluginSettingTa
     }, 1500);
   }
   /**
-   * Создает настройку для выбора папки
+   * Create folder selection setting
    */
   createFolderSetting(containerEl, name, desc, placeholder, currentValue, onValueChange) {
     new import_obsidian8.Setting(containerEl).setName(name).setDesc(desc).addSearch((cb) => {
@@ -2251,7 +2173,7 @@ var ObsidianKinopoiskSettingTab = class extends import_obsidian8.PluginSettingTa
     });
   }
   /**
-   * Создает настройку для выбора файла шаблона
+   * Create template file selection setting
    */
   createTemplateSetting(containerEl, name, desc, placeholder, currentValue, onValueChange) {
     new import_obsidian8.Setting(containerEl).setName(name).setDesc(desc).addSearch((cb) => {
@@ -2267,7 +2189,6 @@ var ObsidianKinopoiskSettingTab = class extends import_obsidian8.PluginSettingTa
     const { containerEl } = this;
     containerEl.empty();
     containerEl.classList.add("obsidian-kinopoisk-plugin__settings");
-    new import_obsidian8.Setting(containerEl).setName(t("settings.languageHeading")).setHeading();
     new import_obsidian8.Setting(containerEl).setName(t("settings.language")).setDesc(t("settings.languageDesc")).addDropdown((dropdown) => {
       const languages = getSupportedLanguages();
       languages.forEach((lang) => {
@@ -2482,8 +2403,7 @@ var CursorJumper = class {
     this.app = app;
   }
   /**
-   * Перемещает курсор в начало активного документа
-   * Используется после создания новой заметки для удобства редактирования
+   * Move cursor to the beginning of active document
    */
   async jumpToNextCursorLocation() {
     try {
@@ -2520,23 +2440,14 @@ var ObsidianKinopoiskPlugin = class extends import_obsidian10.Plugin {
     });
     this.addSettingTab(new ObsidianKinopoiskSettingTab(this.app, this));
   }
-  /**
-   * Отображает уведомление с ошибкой пользователю
-   */
+  // Shows error notification to user
   showNotice(error) {
     try {
       new import_obsidian10.Notice(error.message);
     } catch (e) {
     }
   }
-  /**
-   * Основной метод создания новой заметки:
-   * - Выполняет поиск и выбор фильма/сериала
-   * - Определяет шаблон и папку в зависимости от типа контента
-   * - Создает папку если она не существует
-   * - Создает файл с уникальным именем
-   * - Заполняет шаблон данными и открывает для редактирования
-   */
+  // Main workflow: search -> select -> create note with template
   async createNewNote() {
     try {
       const movieShow = await this.searchMovieShow();
@@ -2576,16 +2487,12 @@ var ObsidianKinopoiskPlugin = class extends import_obsidian10.Plugin {
       this.showNotice(err);
     }
   }
-  /**
-   * Координирует процесс поиска: сначала поиск, затем выбор из результатов
-   */
+  // Coordinates search process: search then select from results
   async searchMovieShow() {
     const searchedItems = await this.openSearchModal();
     return await this.openSuggestModal(searchedItems);
   }
-  /**
-   * Открывает модальное окно поиска и возвращает найденные элементы
-   */
+  // Opens search modal and returns found items
   async openSearchModal() {
     return new Promise((resolve, reject) => {
       return new SearchModal(this, (error, results) => {
@@ -2593,9 +2500,7 @@ var ObsidianKinopoiskPlugin = class extends import_obsidian10.Plugin {
       }).open();
     });
   }
-  /**
-   * Открывает модальное окно выбора и возвращает детальную информацию о выбранном элементе
-   */
+  // Opens suggestion modal and returns detailed info about selected item
   async openSuggestModal(items) {
     return new Promise((resolve, reject) => {
       return new ItemsSuggestModal(this, items, (error, selectedItem) => {
@@ -2603,9 +2508,7 @@ var ObsidianKinopoiskPlugin = class extends import_obsidian10.Plugin {
       }).open();
     });
   }
-  /**
-   * Загружает содержимое шаблона и заполняет его данными фильма/сериала
-   */
+  // Loads template content and fills it with movie/series data
   async getRenderedContents(movieShow) {
     const { movieTemplateFile, seriesTemplateFile } = this.settings;
     const templateFile = movieShow.isSeries ? seriesTemplateFile : movieTemplateFile;

@@ -1,12 +1,12 @@
 /**
  * ApiValidator.ts
  *
- * Валидация входных данных для API Кинопоиск
+ * Input validation for Kinopoisk API requests
  */
 
 import { t } from "../i18n";
 
-// Константы для валидации
+// Validation constants
 const MIN_QUERY_LENGTH = 1;
 const MAX_QUERY_LENGTH = 200;
 const MIN_TOKEN_LENGTH = 10;
@@ -14,12 +14,9 @@ const MAX_TOKEN_LENGTH = 100;
 const MIN_MOVIE_ID = 1;
 const MAX_MOVIE_ID = 99999999;
 
-/**
- * Класс для валидации данных перед отправкой в API
- */
 export class ApiValidator {
 	/**
-	 * Проверяет валидность API токена
+	 * Validates API token format and length
 	 */
 	public isValidToken(token: unknown): boolean {
 		if (typeof token !== "string") {
@@ -28,12 +25,10 @@ export class ApiValidator {
 
 		const trimmedToken = token.trim();
 
-		// Проверяем на пустоту
 		if (!trimmedToken) {
 			return false;
 		}
 
-		// Проверяем длину
 		if (
 			trimmedToken.length < MIN_TOKEN_LENGTH ||
 			trimmedToken.length > MAX_TOKEN_LENGTH
@@ -41,7 +36,7 @@ export class ApiValidator {
 			return false;
 		}
 
-		// Проверяем на валидные символы (обычно токены содержат буквы, цифры, дефисы)
+		// Check for valid token characters (letters, numbers, dashes, underscores)
 		const tokenPattern = /^[A-Za-z0-9\-_]+$/;
 		if (!tokenPattern.test(trimmedToken)) {
 			return false;
@@ -51,7 +46,7 @@ export class ApiValidator {
 	}
 
 	/**
-	 * Проверяет валидность поискового запроса
+	 * Validates search query for safety and length
 	 */
 	public isValidSearchQuery(query: unknown): boolean {
 		if (typeof query !== "string") {
@@ -60,12 +55,10 @@ export class ApiValidator {
 
 		const trimmedQuery = query.trim();
 
-		// Проверяем на пустоту
 		if (!trimmedQuery) {
 			return false;
 		}
 
-		// Проверяем длину
 		if (
 			trimmedQuery.length < MIN_QUERY_LENGTH ||
 			trimmedQuery.length > MAX_QUERY_LENGTH
@@ -73,7 +66,7 @@ export class ApiValidator {
 			return false;
 		}
 
-		// Проверяем на подозрительные символы (потенциальная инъекция)
+		// Check for suspicious patterns (potential injection)
 		const suspiciousPatterns = [
 			/<script/i,
 			/javascript:/i,
@@ -90,25 +83,21 @@ export class ApiValidator {
 	}
 
 	/**
-	 * Проверяет валидность ID фильма
+	 * Validates movie ID range and type
 	 */
 	public isValidMovieId(id: unknown): boolean {
-		// Проверяем тип
 		if (typeof id !== "number") {
 			return false;
 		}
 
-		// Проверяем на NaN и Infinity
 		if (!Number.isFinite(id)) {
 			return false;
 		}
 
-		// Проверяем диапазон
 		if (id < MIN_MOVIE_ID || id > MAX_MOVIE_ID) {
 			return false;
 		}
 
-		// Проверяем что это целое число
 		if (!Number.isInteger(id)) {
 			return false;
 		}
@@ -117,7 +106,7 @@ export class ApiValidator {
 	}
 
 	/**
-	 * Проверяет валидность параметров пагинации
+	 * Validates pagination parameters
 	 */
 	public isValidPaginationParams(page?: number, limit?: number): boolean {
 		if (page !== undefined) {
@@ -136,28 +125,28 @@ export class ApiValidator {
 	}
 
 	/**
-	 * Санитизирует поисковый запрос
+	 * Sanitizes search query by removing dangerous characters
 	 */
 	public sanitizeQuery(query: string): string {
 		return query
 			.trim()
-			.replace(/\s+/g, " ") // Множественные пробелы в один
-			.replace(/[<>]/g, "") // Удаляем потенциально опасные символы
-			.substring(0, MAX_QUERY_LENGTH); // Обрезаем до максимальной длины
+			.replace(/\s+/g, " ") // Multiple spaces to single space
+			.replace(/[<>]/g, "") // Remove potentially dangerous characters
+			.substring(0, MAX_QUERY_LENGTH);
 	}
 
 	/**
-	 * Санитизирует токен
+	 * Sanitizes token by keeping only allowed characters
 	 */
 	public sanitizeToken(token: string): string {
 		return token
 			.trim()
-			.replace(/[^A-Za-z0-9\-_]/g, "") // Оставляем только допустимые символы
-			.substring(0, MAX_TOKEN_LENGTH); // Обрезаем до максимальной длины
+			.replace(/[^A-Za-z0-9\-_]/g, "") // Keep only allowed characters
+			.substring(0, MAX_TOKEN_LENGTH);
 	}
 
 	/**
-	 * Проверяет общую валидность конфигурации запроса
+	 * Validates complete request configuration
 	 */
 	public validateRequestConfig(config: {
 		token: string;
@@ -168,12 +157,10 @@ export class ApiValidator {
 	}): { isValid: boolean; errors: string[] } {
 		const errors: string[] = [];
 
-		// Проверяем токен
 		if (!this.isValidToken(config.token)) {
 			errors.push(t("validation.invalidApiToken"));
 		}
 
-		// Проверяем запрос если есть
 		if (
 			config.query !== undefined &&
 			!this.isValidSearchQuery(config.query)
@@ -181,7 +168,6 @@ export class ApiValidator {
 			errors.push(t("validation.invalidSearchQuery"));
 		}
 
-		// Проверяем ID фильма если есть
 		if (
 			config.movieId !== undefined &&
 			!this.isValidMovieId(config.movieId)
@@ -189,7 +175,6 @@ export class ApiValidator {
 			errors.push(t("validation.invalidMovieId"));
 		}
 
-		// Проверяем пагинацию если есть
 		if (!this.isValidPaginationParams(config.page, config.limit)) {
 			errors.push(t("validation.invalidPaginationParams"));
 		}

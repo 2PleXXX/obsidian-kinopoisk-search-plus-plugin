@@ -29,7 +29,6 @@ export interface Translations {
 		errorMovieData: string;
 		errorUnexpected: string;
 		errorGettingDetails: string;
-		// Новые строки из suggest_modal.ts
 		posterPlaceholderEmoji: string;
 		posterTooltipGeoblock: string;
 		posterTooltipMissing: string;
@@ -153,7 +152,6 @@ export interface Translations {
 		seriesTemplateFile: string;
 		seriesTemplateFileDesc: string;
 		seriesTemplateFilePlaceholder: string;
-		languageHeading: string;
 		language: string;
 		languageDesc: string;
 	};
@@ -183,7 +181,6 @@ const ru: Translations = {
 		errorUnexpected: "Произошла неожиданная ошибка",
 		errorGettingDetails:
 			"Произошла неожиданная ошибка при получении информации о фильме",
-		// Новые строки из suggest_modal.ts
 		posterPlaceholderEmoji: "📽️",
 		posterTooltipGeoblock: "Постер недоступен (возможно, геоблокировка)",
 		posterTooltipMissing: "Постер отсутствует",
@@ -327,7 +324,6 @@ const ru: Translations = {
 		seriesTemplateFile: "Файл шаблона для сериалов",
 		seriesTemplateFileDesc: "Файлы будут доступны как шаблоны.",
 		seriesTemplateFilePlaceholder: "Например: templates/template-file",
-		languageHeading: "Язык",
 		language: "Язык интерфейса",
 		languageDesc: "Выберите язык интерфейса плагина.",
 	},
@@ -357,7 +353,6 @@ const en: Translations = {
 		errorUnexpected: "An unexpected error occurred",
 		errorGettingDetails:
 			"An unexpected error occurred while getting movie information",
-		// Новые строки из suggest_modal.ts
 		posterPlaceholderEmoji: "📽️",
 		posterTooltipGeoblock: "Poster unavailable (possibly geo-blocked)",
 		posterTooltipMissing: "Poster missing",
@@ -494,7 +489,6 @@ const en: Translations = {
 		seriesTemplateFile: "TV series template file",
 		seriesTemplateFileDesc: "Files will be available as templates.",
 		seriesTemplateFilePlaceholder: "Example: templates/template-file",
-		languageHeading: "Language",
 		language: "Interface language",
 		languageDesc: "Select the plugin interface language.",
 	},

@@ -1,15 +1,8 @@
 /**
  * search_modal.ts
  *
- * Модальное окно для поиска фильмов и сериалов через API Кинопоиска.
- * Предоставляет интерфейс для ввода поискового запроса и инициации поиска.
- *
- * Основные функции:
- * - Отображение формы поиска с текстовым полем
- * - Отправка запроса к API при нажатии Enter или кнопки "Search"
- * - Управление состоянием загрузки (блокировка UI во время запроса)
- * - Передача результатов поиска через callback функцию
- * - Показ уведомлений при отсутствии результатов
+ * Search modal for movies and TV shows via Kinopoisk API.
+ * Provides search interface and handles API requests.
  */
 
 import {
@@ -45,9 +38,7 @@ export class SearchModal extends Modal {
 		this.kinopoiskProvider = new KinopoiskProvider();
 	}
 
-	/**
-	 * Управляет состоянием загрузки UI
-	 */
+	// Manages UI loading state
 	setBusy(busy: boolean) {
 		this.isBusy = busy;
 		this.okBtnRef?.setDisabled(busy);
@@ -57,23 +48,18 @@ export class SearchModal extends Modal {
 		this.inputRef?.setDisabled(busy);
 	}
 
-	/**
-	 * Валидирует входные данные перед поиском
-	 */
+	// Validates input before search
 	private validateInput(): boolean {
-		// Проверяем, что запрос не пустой
 		if (!this.query?.trim()) {
 			new Notice(t("modals.enterMovieName"));
 			return false;
 		}
 
-		// Проверяем, что API токен установлен
 		if (!this.token?.trim()) {
 			new Notice(t("modals.needApiToken"));
 			return false;
 		}
 
-		// Проверяем, что не выполняется другой запрос
 		if (this.isBusy) {
 			return false;
 		}
@@ -81,24 +67,18 @@ export class SearchModal extends Modal {
 		return true;
 	}
 
-	/**
-	 * Обрабатывает ошибки поиска
-	 */
+	// Handles search errors
 	private handleSearchError(error: unknown): void {
-		// Показываем понятную ошибку пользователю
 		const errorMessage =
 			error instanceof Error
 				? error.message
 				: t("modals.errorUnexpected");
 		new Notice(errorMessage);
 
-		// Передаем ошибку в callback для дополнительной обработки, если нужно
 		this.callback(error as Error);
 	}
 
-	/**
-	 * Выполняет поиск через API Кинопоиска
-	 */
+	// Performs search via Kinopoisk API
 	async search() {
 		if (!this.validateInput()) {
 			return;
@@ -111,20 +91,16 @@ export class SearchModal extends Modal {
 				this.token
 			);
 
-			// Успешный результат
 			this.callback(null, searchResults);
-			this.close(); // Закрываем модальное окно только при успехе
+			this.close(); // Close modal only on success
 		} catch (error) {
 			this.handleSearchError(error);
 		} finally {
-			// Всегда сбрасываем состояние загрузки
 			this.setBusy(false);
 		}
 	}
 
-	/**
-	 * Обработчик нажатия Enter для запуска поиска
-	 */
+	// Enter key handler for search
 	private submitEnterCallback = (event: KeyboardEvent): void => {
 		if (event.key === "Enter" && !event.isComposing) {
 			this.search();
@@ -162,7 +138,7 @@ export class SearchModal extends Modal {
 	}
 
 	onClose() {
-		// Удаляем event listener
+		// Clean up event listener
 		if (this.inputRef?.inputEl) {
 			this.inputRef.inputEl.removeEventListener(
 				"keydown",

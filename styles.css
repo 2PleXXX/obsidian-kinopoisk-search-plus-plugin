@@ -1,11 +1,11 @@
-/* ===== МОДАЛЬНОЕ ОКНО ПОИСКА (SearchModal) ===== */
+/* ===== SEARCH MODAL STYLES ===== */
 
-/* Контейнер для поля ввода в модальном окне поиска */
+/* Input container */
 .kinopoisk-plugin__search-modal--input {
 	padding-bottom: 1.5rem;
 }
 
-/* Поле ввода в модальном окне поиска */
+/* Search input field */
 .kinopoisk-plugin__search-modal--input input {
 	width: 100%;
 	padding: 0.75rem 1rem;
@@ -30,9 +30,9 @@
 	opacity: 0.7;
 }
 
-/* ===== МОДАЛЬНОЕ ОКНО ВЫБОРА ФИЛЬМА (SuggestModal) ===== */
+/* ===== SUGGEST MODAL STYLES ===== */
 
-/* Контейнер для элемента списка фильмов (флекс-контейнер) */
+/* Movie list item container */
 .kinopoisk-plugin__suggest-item {
 	display: flex;
 	align-items: center;
@@ -52,7 +52,7 @@
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Постер фильма в списке предложений */
+/* Movie poster */
 .kinopoisk-plugin__suggest-poster {
 	width: 80px;
 	height: auto;
@@ -65,7 +65,7 @@
 	transform: scale(1.02);
 }
 
-/* Заглушка для постера, когда изображение недоступно */
+/* Poster placeholder when image unavailable */
 .kinopoisk-plugin__suggest-poster-placeholder {
 	width: 80px;
 	height: 120px;
@@ -84,7 +84,7 @@
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Текстовая информация о фильме (название, год, тип) */
+/* Movie text info (title, year, type) */
 .kinopoisk-plugin__suggest-text-info {
 	padding-left: 1rem;
 	flex: 1;
@@ -108,13 +108,13 @@
 	word-break: break-word;
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
+/* ===== RESPONSIVE DESIGN ===== */
 
-/* Мобильные устройства */
+/* Mobile devices */
 @media (max-width: 480px) {
 	.kinopoisk-plugin__search-modal--input input {
 		padding: 0.65rem 0.85rem;
-		font-size: 16px; /* Предотвращает зум на iOS */
+		font-size: 16px; /* Prevents iOS zoom */
 	}
 
 	.kinopoisk-plugin__suggest-item {
@@ -141,7 +141,7 @@
 	}
 }
 
-/* Отключение анимаций для пользователей с соответствующими настройками */
+/* Reduced motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
 	.kinopoisk-plugin__search-modal--input input,
 	.kinopoisk-plugin__suggest-item,
@@ -150,9 +150,9 @@
 	}
 }
 
-/* ===== НАСТРОЙКИ ПЛАГИНА (Settings) ===== */
+/* ===== PLUGIN SETTINGS STYLES ===== */
 
-/* Основной контейнер настроек */
+/* Main settings container */
 .obsidian-kinopoisk-plugin__settings {
 	width: 100%;
 	max-width: none;
@@ -160,7 +160,7 @@
 	box-sizing: border-box;
 }
 
-/* Общие стили для секций настроек */
+/* Common setting item styles */
 .obsidian-kinopoisk-plugin__settings .setting-item {
 	position: relative;
 	padding: 20px 0;
@@ -172,7 +172,7 @@
 	border-bottom: none;
 }
 
-/* Заголовки секций - БЕЗ смещения при ховере */
+/* Section headings - no transform on hover */
 .obsidian-kinopoisk-plugin__settings .setting-item.mod-heading {
 	margin-top: 32px;
 	margin-bottom: 16px;
@@ -215,7 +215,7 @@
 	border-radius: 2px;
 }
 
-/* Информация о настройках */
+/* Setting item info */
 .obsidian-kinopoisk-plugin__settings .setting-item-info {
 	flex-grow: 1;
 	margin-right: 20px;
@@ -248,7 +248,7 @@
 	transform: translateY(-1px);
 }
 
-/* Контролы настроек */
+/* Setting controls */
 .obsidian-kinopoisk-plugin__settings .setting-item-control {
 	display: flex;
 	align-items: center;
@@ -258,7 +258,7 @@
 	flex-shrink: 0;
 }
 
-/* Поля ввода - ШИРОКИЕ И ОДИНАКОВЫЕ */
+/* Input fields - wide and consistent */
 .obsidian-kinopoisk-plugin__settings input[type="text"],
 .obsidian-kinopoisk-plugin__settings input[type="search"] {
 	width: 100%;
@@ -290,9 +290,9 @@
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Индикаторы валидации токена - ПРАВИЛЬНЫЕ ЦВЕТА */
+/* Token validation indicators - proper colors */
 .obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-checking {
-	border-color: #ffa500 !important; /* Оранжевый/желтый для проверки */
+	border-color: #ffa500 !important; /* Orange for checking */
 	background-color: var(--background-primary);
 	position: relative;
 	animation: tokenPulse 2s infinite ease-in-out;
@@ -313,7 +313,7 @@
 }
 
 .obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-valid {
-	border-color: #00aa00 !important; /* Зеленый для валидного */
+	border-color: #00aa00 !important; /* Green for valid */
 	background-color: var(--background-primary);
 	box-shadow: 0 0 0 2px rgba(0, 170, 0, 0.2);
 	animation: tokenSuccess 0.5s ease-out;
@@ -332,7 +332,7 @@
 }
 
 .obsidian-kinopoisk-plugin__settings .kinopoisk-plugin__token-invalid {
-	border-color: #ff4444 !important; /* Красный для невалидного */
+	border-color: #ff4444 !important; /* Red for invalid */
 	background-color: var(--background-primary);
 	box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.2);
 	animation: tokenError 0.5s ease-out;
@@ -350,7 +350,7 @@
 	animation: tokenError 0.5s ease-out;
 }
 
-/* Кнопки - ФИКСИРОВАННАЯ ШИРИНА */
+/* Buttons - fixed width */
 .obsidian-kinopoisk-plugin__settings button {
 	padding: 12px 20px;
 	border: 2px solid var(--interactive-normal);
@@ -418,7 +418,7 @@
 	border-color: var(--interactive-accent-hover);
 }
 
-/* Переключатели (Toggle) */
+/* Toggle switches */
 .obsidian-kinopoisk-plugin__settings .checkbox-container {
 	display: flex;
 	align-items: center;
@@ -476,7 +476,7 @@
 	transform: translateX(24px);
 }
 
-/* Анимации */
+/* Animations */
 @keyframes tokenPulse {
 	0%,
 	100% {
@@ -539,7 +539,7 @@
 	}
 }
 
-/* Адаптивность для мобильных устройств */
+/* Mobile responsive design */
 @media (max-width: 768px) {
 	.obsidian-kinopoisk-plugin__settings {
 		padding: 16px;
@@ -587,7 +587,7 @@
 	.obsidian-kinopoisk-plugin__settings input[type="text"],
 	.obsidian-kinopoisk-plugin__settings input[type="search"] {
 		padding: 14px 16px;
-		font-size: 16px; /* Предотвращает зум на iOS */
+		font-size: 16px; /* Prevents iOS zoom */
 	}
 
 	.obsidian-kinopoisk-plugin__settings button {
@@ -603,7 +603,7 @@
 	}
 }
 
-/* Дополнительные улучшения для темной темы */
+/* Dark theme improvements */
 @media (prefers-color-scheme: dark) {
 	.obsidian-kinopoisk-plugin__settings input[type="text"]:hover,
 	.obsidian-kinopoisk-plugin__settings input[type="search"]:hover {
@@ -615,7 +615,7 @@
 	}
 }
 
-/* Стили для улучшенной фокусировки и доступности */
+/* Accessibility improvements */
 .obsidian-kinopoisk-plugin__settings *:focus-visible {
 	outline: 2px solid var(--interactive-accent);
 	outline-offset: 2px;

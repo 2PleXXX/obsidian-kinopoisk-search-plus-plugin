@@ -1,18 +1,17 @@
 /**
  * DataFormatter.ts
  *
- * Форматирование данных от API Кинопоиск для использования в Obsidian
+ * Formats Kinopoisk API data for use in Obsidian templates
  */
 
 import { KinopoiskFullInfo, KinopoiskPerson } from "Models/kinopoisk_response";
 import { MovieShow } from "Models/MovieShow.model";
 import { capitalizeFirstLetter } from "Utils/utils";
 
-// Константы для форматирования
 const MAX_ARRAY_ITEMS = 15;
 const MAX_FACTS_COUNT = 5;
 
-// Переводы типов контента
+// Content type translations to Russian
 const TYPE_TRANSLATIONS: Record<string, string> = {
 	"animated-series": "Анимационный сериал",
 	anime: "Аниме",
@@ -21,7 +20,7 @@ const TYPE_TRANSLATIONS: Record<string, string> = {
 	"tv-series": "Сериал",
 } as const;
 
-// HTML сущности для декодирования
+// HTML entities for decoding
 const HTML_ENTITIES: Record<string, string> = {
 	"&laquo;": "«",
 	"&raquo;": "»",
@@ -39,44 +38,28 @@ const HTML_ENTITIES: Record<string, string> = {
 	"&hellip;": "…",
 } as const;
 
-/**
- * Типы форматирования для разных видов данных
- */
 enum FormatType {
-	SHORT_VALUE = "short", // Короткие значения без кавычек (жанры, актёры)
-	LONG_TEXT = "long", // Длинные тексты с кавычками (описания)
-	URL = "url", // URL без кавычек
-	LINK = "link", // Ссылки Obsidian с кавычками
+	SHORT_VALUE = "short", // Short values without quotes (genres, actors)
+	LONG_TEXT = "long", // Long texts with quotes (descriptions)
+	URL = "url", // URLs without quotes
+	LINK = "link", // Obsidian links with quotes
 }
 
-/**
- * Класс для форматирования данных от API
- */
 export class DataFormatter {
 	/**
-	 * Основной метод преобразования данных API в формат MovieShow
+	 * Transforms API data into MovieShow format
 	 */
 	public createMovieShowFrom(fullInfo: KinopoiskFullInfo): MovieShow {
-		// Вычисляем данные о сезонах
 		const seasonsData = this.calculateSeasonsData(fullInfo.seasonsInfo);
-
-		// Извлекаем людей по профессиям
 		const people = this.extractPeople(fullInfo.persons || []);
-
-		// Извлекаем компании и сети
 		const companies = this.extractCompanies(fullInfo);
-
-		// Обрабатываем факты
 		const facts = this.processFacts(fullInfo.facts || []);
-
-		// Обрабатываем названия
 		const names = this.processNames(fullInfo);
 
-		// Первый период выпуска
 		const firstReleaseYear = fullInfo.releaseYears?.[0];
 
 		const item: MovieShow = {
-			// Основная информация
+			// Basic information
 			id: fullInfo.id,
 			name: this.formatArray([fullInfo.name], FormatType.SHORT_VALUE),
 			alternativeName: this.formatArray(
@@ -93,14 +76,14 @@ export class DataFormatter {
 				FormatType.LONG_TEXT
 			),
 
-			// Дополнительные свойства для имен файлов
+			// Additional properties for filenames
 			nameForFile: this.cleanTextForMetadata(fullInfo.name),
 			alternativeNameForFile: this.cleanTextForMetadata(
 				fullInfo.alternativeName || ""
 			),
 			enNameForFile: this.cleanTextForMetadata(fullInfo.enName || ""),
 
-			// Изображения
+			// Images
 			posterUrl: this.formatArray(
 				[fullInfo.poster?.url || ""],
 				FormatType.URL
@@ -114,12 +97,12 @@ export class DataFormatter {
 				FormatType.URL
 			),
 
-			// Готовые ссылки на изображения для Obsidian
+			// Ready-to-use image links for Obsidian
 			posterImageLink: this.createImageLink(fullInfo.poster?.url || ""),
 			coverImageLink: this.createImageLink(fullInfo.backdrop?.url || ""),
 			logoImageLink: this.createImageLink(fullInfo.logo?.url || ""),
 
-			// Классификация
+			// Classification
 			genres: this.formatArray(
 				fullInfo.genres.map((g) => capitalizeFirstLetter(g.name)),
 				FormatType.SHORT_VALUE
@@ -145,7 +128,7 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Люди
+			// People
 			director: this.formatArray(
 				people.directors,
 				FormatType.SHORT_VALUE
@@ -161,7 +144,7 @@ export class DataFormatter {
 			),
 			producersLinks: this.formatArray(people.producers, FormatType.LINK),
 
-			// Технические характеристики
+			// Technical specifications
 			movieLength: fullInfo.movieLength || 0,
 			isSeries: fullInfo.isSeries,
 			seriesLength: fullInfo.seriesLength || 0,
@@ -170,7 +153,7 @@ export class DataFormatter {
 			seasonsCount: seasonsData.count,
 			seriesInSeasonCount: seasonsData.averageEpisodesPerSeason,
 
-			// Рейтинги и голоса
+			// Ratings and votes
 			ratingKp: fullInfo.rating?.kp || 0,
 			ratingImdb: fullInfo.rating?.imdb || 0,
 			ratingFilmCritics: fullInfo.rating?.filmCritics || 0,
@@ -180,7 +163,7 @@ export class DataFormatter {
 			votesFilmCritics: fullInfo.votes?.filmCritics || 0,
 			votesRussianFilmCritics: fullInfo.votes?.russianFilmCritics || 0,
 
-			// Внешние идентификаторы и ссылки
+			// External IDs and links
 			kinopoiskUrl: this.formatArray(
 				[`https://www.kinopoisk.ru/film/${fullInfo.id}/`],
 				FormatType.URL
@@ -195,7 +178,7 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Дополнительная информация
+			// Additional information
 			slogan: this.formatArray(
 				[fullInfo.slogan || ""],
 				FormatType.LONG_TEXT
@@ -206,7 +189,7 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Финансы
+			// Financial data
 			budgetValue: fullInfo.budget?.value || 0,
 			budgetCurrency: this.formatArray(
 				[fullInfo.budget?.currency || ""],
@@ -228,7 +211,7 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Даты премьер
+			// Premiere dates
 			premiereWorld: this.formatArray(
 				[this.formatDate(fullInfo.premiere?.world)],
 				FormatType.SHORT_VALUE
@@ -246,18 +229,18 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Периоды выпуска
+			// Release years
 			releaseYearsStart: firstReleaseYear?.start || 0,
 			releaseYearsEnd: firstReleaseYear?.end || 0,
 
-			// Рейтинги в топах
+			// Top ratings
 			top10: fullInfo.top10 || 0,
 			top250: fullInfo.top250 || 0,
 
-			// Факты
+			// Facts
 			facts: this.formatArray(facts, FormatType.LONG_TEXT),
 
-			// Альтернативные названия
+			// Alternative names
 			allNamesString: this.formatArray(
 				names.allNames,
 				FormatType.SHORT_VALUE
@@ -267,7 +250,7 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Сети и компании
+			// Networks and companies
 			networks: this.formatArray(
 				companies.networks,
 				FormatType.SHORT_VALUE
@@ -285,7 +268,7 @@ export class DataFormatter {
 				FormatType.LINK
 			),
 
-			// Дистрибьюторы
+			// Distributors
 			distributor: this.formatArray(
 				[fullInfo.distributors?.distributor || ""],
 				FormatType.SHORT_VALUE
@@ -301,7 +284,7 @@ export class DataFormatter {
 				FormatType.SHORT_VALUE
 			),
 
-			// Связанные фильмы/сериалы
+			// Related movies/series
 			sequelsAndPrequels: this.formatArray(
 				companies.sequelsAndPrequels,
 				FormatType.SHORT_VALUE
@@ -316,7 +299,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Универсальное форматирование массивов в зависимости от типа
+	 * Universal array formatting based on type
 	 */
 	private formatArray(
 		items: string[],
@@ -356,7 +339,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Вычисляет данные о сезонах
+	 * Calculates seasons data from seasons info
 	 */
 	private calculateSeasonsData(
 		seasonsInfo?: Array<{ episodesCount: number }>
@@ -381,7 +364,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Извлекает людей по профессиям
+	 * Extracts people by profession from persons array
 	 */
 	private extractPeople(persons: KinopoiskPerson[]): {
 		directors: string[];
@@ -419,7 +402,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Извлекает компании и связанные фильмы
+	 * Extracts companies and related movies from API response
 	 */
 	private extractCompanies(fullInfo: KinopoiskFullInfo): {
 		networks: string[];
@@ -445,7 +428,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Обрабатывает факты (удаляет спойлеры и HTML)
+	 * Processes facts by removing spoilers and HTML tags
 	 */
 	private processFacts(
 		facts: Array<{ spoiler?: boolean; value: string }>
@@ -459,9 +442,6 @@ export class DataFormatter {
 			.map((fact) => this.stripHtmlTags(fact.value));
 	}
 
-	/**
-	 * Обрабатывает названия
-	 */
 	private processNames(fullInfo: KinopoiskFullInfo): {
 		allNames: string[];
 	} {
@@ -474,7 +454,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Форматирует дату в формат Obsidian (YYYY-MM-DD)
+	 * Formats date to Obsidian format (YYYY-MM-DD)
 	 */
 	private formatDate(dateString?: string): string {
 		if (!dateString) return "";
@@ -482,7 +462,7 @@ export class DataFormatter {
 		try {
 			const date = new Date(dateString);
 
-			// Проверяем валидность даты более строго
+			// Stricter date validation
 			if (
 				isNaN(date.getTime()) ||
 				date.getFullYear() < 1800 ||
@@ -498,7 +478,7 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Очищает текст от символов, которые могут нарушить метаданные
+	 * Cleans text from characters that might break metadata
 	 */
 	private cleanTextForMetadata(text: string): string {
 		if (!text) return "";
@@ -506,40 +486,37 @@ export class DataFormatter {
 	}
 
 	/**
-	 * Создает ссылку на изображение для Obsidian
+	 * Creates image link for Obsidian format
 	 */
 	private createImageLink(imagePath: string): string[] {
 		if (!imagePath || imagePath.trim() === "") return [];
 
-		// Если это локальный путь, используем формат ![[путь]]
+		// Local path uses ![[path]] format
 		if (!imagePath.startsWith("http")) {
 			return [`![[${imagePath}]]`];
 		}
 
-		// Если это веб-ссылка, используем формат ![](url)
+		// Web link uses ![](url) format
 		return [`![](${imagePath})`];
 	}
 
-	/**
-	 * Переводит типы контента на русский язык
-	 */
 	private translateType(type: string): string {
 		return TYPE_TRANSLATIONS[type] || type;
 	}
 
 	/**
-	 * Удаляет HTML теги и декодирует HTML сущности
+	 * Removes HTML tags and decodes HTML entities
 	 */
 	private stripHtmlTags(text: string): string {
-		// Удаляем HTML теги
+		// Remove HTML tags
 		let cleanText = text.replace(/<[^>]*>/g, "");
 
-		// Декодируем HTML сущности
+		// Decode HTML entities
 		for (const [entity, char] of Object.entries(HTML_ENTITIES)) {
 			cleanText = cleanText.replace(new RegExp(entity, "g"), char);
 		}
 
-		// Удаляем любые оставшиеся HTML сущности
+		// Remove any remaining HTML entities
 		cleanText = cleanText.replace(/&#?\w+;/g, "");
 
 		return cleanText.trim();

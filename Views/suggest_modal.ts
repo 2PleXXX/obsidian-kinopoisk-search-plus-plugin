@@ -1,16 +1,8 @@
 /**
  * suggest_modal.ts
  *
- * Модальное окно для выбора фильма/сериала из результатов поиска.
- * Отображает список найденных элементов с постерами и основной информацией,
- * позволяет фильтровать результаты и выбрать нужный элемент.
- *
- * Основные функции:
- * - Отображение списка фильмов/сериалов с постерами
- * - Фильтрация результатов по названию (основному и альтернативному)
- * - Получение детальной информации о выбранном элементе через API
- * - Передача полных данных фильма/сериала через callback функцию
- * - Отображение прогресса скачивания изображений
+ * Modal for selecting movies/TV shows from search results.
+ * Displays search results with posters, handles filtering and detailed data fetching.
  */
 
 import { SuggestModal, Notice } from "obsidian";
@@ -40,9 +32,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		this.kinopoiskProvider = new KinopoiskProvider();
 	}
 
-	/**
-	 * Фильтрует список предложений по поисковому запросу
-	 */
+	// Filters suggestions by search query
 	getSuggestions(query: string): KinopoiskSuggestItem[] {
 		return this.suggestion.filter((item) => {
 			const searchQuery = query?.toLowerCase();
@@ -53,9 +43,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		});
 	}
 
-	/**
-	 * Проверяет, является ли URL валидным для изображения
-	 */
+	// Validates image URL
 	private isValidImageUrl(url?: string): boolean {
 		if (!url || url.trim() === "") return false;
 
@@ -67,9 +55,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		}
 	}
 
-	/**
-	 * Создает элемент изображения постера или заглушку
-	 */
+	// Creates poster image element or placeholder
 	private createPosterElement(
 		item: KinopoiskSuggestItem,
 		container: HTMLElement
@@ -81,12 +67,10 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 				cls: "kinopoisk-plugin__suggest-poster",
 			});
 
-			// Устанавливаем src отдельно, чтобы избежать ошибки TypeScript
 			imgElement.src = posterUrl!;
 
-			// Добавляем обработчик ошибки загрузки изображения
+			// Handle image loading error
 			imgElement.addEventListener("error", () => {
-				// Если изображение не загрузилось, заменяем на заглушку
 				const placeholder = container.createEl("div", {
 					text: t("modals.posterPlaceholderEmoji"),
 					cls: "kinopoisk-plugin__suggest-poster-placeholder",
@@ -97,13 +81,13 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 
 			return imgElement;
 		} else {
-			// Если URL не валиден или отсутствует, показываем заглушку
+			// Show placeholder if URL is invalid or missing
 			const placeholder = container.createEl("div", {
 				text: t("modals.posterPlaceholderEmoji"),
 				cls: "kinopoisk-plugin__suggest-poster-placeholder",
 			});
 
-			// Определяем причину и добавляем подсказку
+			// Determine reason and add tooltip
 			const reason = !posterUrl
 				? t("modals.posterTooltipMissing")
 				: posterUrl.trim() === ""
@@ -115,9 +99,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		}
 	}
 
-	/**
-	 * Отрисовывает элемент списка с постером и информацией о фильме/сериале
-	 */
+	// Renders list item with poster and movie info
 	renderSuggestion(item: KinopoiskSuggestItem, el: HTMLElement) {
 		const title = item.name;
 		const subtitle = `${item.year}, ${item.alternativeName} (${item.type})`;
@@ -126,10 +108,8 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 			cls: "kinopoisk-plugin__suggest-item",
 		});
 
-		// Добавляем постер или заглушку
 		this.createPosterElement(item, container);
 
-		// Добавляем текстовую информацию
 		const textInfo = container.createEl("div", {
 			cls: "kinopoisk-plugin__suggest-text-info",
 		});
@@ -137,24 +117,18 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		textInfo.appendChild(el.createEl("small", { text: subtitle }));
 	}
 
-	/**
-	 * Обрабатывает выбор элемента из списка
-	 */
+	// Handles item selection
 	onChooseSuggestion(item: KinopoiskSuggestItem) {
 		this.getItemDetails(item);
 	}
 
-	/**
-	 * Управляет отображением уведомлений о загрузке
-	 */
+	// Manages loading notice display
 	private updateStatus(message: string, persistent: boolean = true): void {
 		this.hideLoadingNotice();
 		this.loadingNotice = new Notice(message, persistent ? 0 : 3000);
 	}
 
-	/**
-	 * Скрывает уведомление о загрузке, если оно существует
-	 */
+	// Hides loading notice
 	private hideLoadingNotice(): void {
 		if (this.loadingNotice) {
 			this.loadingNotice.hide();
@@ -162,25 +136,19 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		}
 	}
 
-	/**
-	 * Обновляет текст существующего уведомления о загрузке
-	 */
+	// Updates existing loading notice text
 	private updateLoadingNotice(message: string): void {
 		if (this.loadingNotice) {
-			// Получаем элемент DOM уведомления и обновляем его содержимое
 			const noticeEl = this.loadingNotice.noticeEl;
 			if (noticeEl) {
 				noticeEl.textContent = message;
 			}
 		} else {
-			// Если уведомления нет, создаем новое
 			this.updateStatus(message);
 		}
 	}
 
-	/**
-	 * Создает прогресс-бар в виде текста с процентами
-	 */
+	// Creates progress text with percentage
 	private createProgressText(
 		current: number,
 		total: number,
@@ -194,9 +162,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		return `${task}\n${progressBar} ${current}/${total} (${percentage}%)`;
 	}
 
-	/**
-	 * Создает визуальный прогресс-бар из символов
-	 */
+	// Creates visual progress bar from characters
 	private createProgressBar(
 		current: number,
 		total: number,
@@ -210,18 +176,14 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		return "█".repeat(filled) + "░".repeat(empty);
 	}
 
-	/**
-	 * Валидирует входные данные
-	 */
+	// Validates input data
 	private validateInput(item: KinopoiskSuggestItem): boolean {
-		// Проверяем базовые данные
 		if (!item?.id || item.id <= 0) {
 			new Notice(t("modals.errorMovieData"));
 			this.onChoose(new Error(t("modals.errorMovieData")));
 			return false;
 		}
 
-		// Проверяем API токен
 		if (!this.token?.trim()) {
 			new Notice(t("modals.needApiToken"));
 			this.onChoose(new Error(t("modals.needApiToken")));
@@ -231,22 +193,18 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		return true;
 	}
 
-	/**
-	 * Получает основную информацию о фильме через API
-	 */
+	// Fetches movie data via API
 	private async fetchMovieData(itemId: number): Promise<MovieShow> {
 		return await this.kinopoiskProvider.getMovieById(itemId, this.token);
 	}
 
-	/**
-	 * Обрабатывает изображения фильма с прогресс-баром
-	 */
+	// Processes movie images with progress tracking
 	private async processMovieImages(movieShow: MovieShow): Promise<MovieShow> {
 		this.updateLoadingNotice(t("modals.preparingImages"));
 
 		let imageProcessingCompleted = false;
 
-		// Создаем callback для отслеживания прогресса
+		// Progress callback for image processing
 		const progressCallback: ProgressCallback = (
 			current: number,
 			total: number,
@@ -259,13 +217,11 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 			);
 			this.updateLoadingNotice(progressText);
 
-			// Отмечаем завершение обработки изображений
 			if (current === total) {
 				imageProcessingCompleted = true;
 			}
 		};
 
-		// Обрабатываем изображения с прогресс-баром
 		const processedMovieShow = await processImages(
 			this.plugin.app,
 			movieShow,
@@ -273,7 +229,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 			progressCallback
 		);
 
-		// Небольшая задержка, чтобы пользователь увидел финальный статус
+		// Brief delay to show final status
 		if (imageProcessingCompleted) {
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 		}
@@ -281,72 +237,51 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		return processedMovieShow;
 	}
 
-	/**
-	 * Обрабатывает успешное получение данных фильма
-	 */
+	// Handles successful data retrieval
 	private handleSuccess(
 		movieShow: MovieShow,
 		hadImageProcessing: boolean = false
 	): void {
 		this.hideLoadingNotice();
 
-		// Показываем соответствующее уведомление об успешном завершении
 		if (!hadImageProcessing) {
-			// Если изображения не обрабатывались (уже локальные или отключено)
 			new Notice(t("modals.movieInfoLoaded"));
-		} else {
-			// Если были изображения - не показываем дополнительное уведомление
-			// так как processImages уже показало соответствующее сообщение
 		}
 
-		// Успешно получили данные
 		this.onChoose(null, movieShow);
 	}
 
-	/**
-	 * Обрабатывает ошибки получения данных фильма
-	 */
+	// Handles errors during data retrieval
 	private handleError(error: unknown): void {
-		// Скрываем уведомление о загрузке в случае ошибки
 		this.hideLoadingNotice();
 
-		// Показываем понятную ошибку пользователю
 		const errorMessage =
 			error instanceof Error
 				? error.message
 				: t("modals.errorGettingDetails");
 		new Notice(errorMessage);
 
-		// Логируем подробную ошибку для разработчика
 		console.error("Error getting movie details:", error);
-
-		// Передаем ошибку в callback
 		this.onChoose(error as Error);
 	}
 
-	/**
-	 * Получает детальную информацию о выбранном фильме/сериале через API
-	 * с поддержкой локального сохранения изображений и прогресс-бара
-	 */
+	// Fetches detailed movie information with image processing and progress tracking
 	async getItemDetails(item: KinopoiskSuggestItem) {
 		if (!this.validateInput(item)) {
 			return;
 		}
 
 		try {
-			// Показываем начальное уведомление о загрузке
 			this.updateStatus(t("modals.loadingMovieInfo"));
 
-			// Получаем основную информацию о фильме через новый API
 			const movieShow = await this.fetchMovieData(item.id);
 
-			// Если локальное сохранение изображений отключено, сразу возвращаем результат
+			// Return immediately if local image saving is disabled
 			if (!this.plugin.settings.saveImagesLocally) {
 				this.handleSuccess(movieShow, false);
 				return;
 			}
 
-			// Обрабатываем изображения
 			const processedMovieShow = await this.processMovieImages(movieShow);
 			this.handleSuccess(processedMovieShow, true);
 		} catch (error) {
@@ -354,9 +289,7 @@ export class ItemsSuggestModal extends SuggestModal<KinopoiskSuggestItem> {
 		}
 	}
 
-	/**
-	 * Переопределяем метод закрытия для очистки уведомлений
-	 */
+	// Clean up notices on close
 	onClose() {
 		this.hideLoadingNotice();
 		super.onClose();

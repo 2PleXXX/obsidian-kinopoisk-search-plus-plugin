@@ -1,18 +1,8 @@
 /**
  * main.ts
  *
- * Главный класс плагина для интеграции с API Кинопоиска в Obsidian.
- * Координирует весь процесс поиска и создания заметок о фильмах/сериалах.
- *
- * Основной workflow:
- * 1. Пользователь инициирует поиск (через ribbon icon или команду)
- * 2. Открывается модальное окно поиска
- * 3. Отображаются результаты для выбора
- * 4. Создается новая заметка на основе выбранного шаблона
- * 5. Заполняются переменные шаблона данными из API
- * 6. Файл сохраняется в соответствующую папку с правильным именем
- *
- * Поддерживает разные шаблоны и папки для фильмов и сериалов.
+ * Main plugin class for Kinopoisk API integration in Obsidian.
+ * Coordinates the entire workflow of searching and creating movie/series notes.
  */
 
 import { Notice, Plugin } from "obsidian";
@@ -37,10 +27,9 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 	settings: ObsidianKinopoiskPluginSettings;
 
 	async onload() {
-		// Загружаем настройки
 		await this.loadSettings();
 
-		// Инициализируем язык из настроек или определяем автоматически
+		// Initialize language from settings or auto-detect
 		initializeLanguage(this.settings.language);
 
 		this.addRibbonIcon("film", "Search in Kinopoisk", () => {
@@ -58,9 +47,7 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 		this.addSettingTab(new ObsidianKinopoiskSettingTab(this.app, this));
 	}
 
-	/**
-	 * Отображает уведомление с ошибкой пользователю
-	 */
+	// Shows error notification to user
 	showNotice(error: Error) {
 		try {
 			new Notice(error.message);
@@ -69,14 +56,7 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 		}
 	}
 
-	/**
-	 * Основной метод создания новой заметки:
-	 * - Выполняет поиск и выбор фильма/сериала
-	 * - Определяет шаблон и папку в зависимости от типа контента
-	 * - Создает папку если она не существует
-	 * - Создает файл с уникальным именем
-	 * - Заполняет шаблон данными и открывает для редактирования
-	 */
+	// Main workflow: search -> select -> create note with template
 	async createNewNote(): Promise<void> {
 		try {
 			const movieShow = await this.searchMovieShow();
@@ -94,7 +74,7 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 				: movieFileNameFormat;
 			const folderPath = movieShow.isSeries ? seriesFolder : movieFolder;
 
-			// Создаем папку если она не существует
+			// Create folder if it doesn't exist
 			if (
 				folderPath &&
 				!(await this.app.vault.adapter.exists(folderPath))
@@ -121,7 +101,7 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 			await newLeaf.openFile(targetFile, { state: { mode: "source" } });
 			newLeaf.setEphemeralState({ rename: "all" });
 
-			// Перемещает курсор к следующему местоположению в шаблоне
+			// Jump cursor to next template location
 			await new CursorJumper(this.app).jumpToNextCursorLocation();
 		} catch (err) {
 			console.warn(err);
@@ -129,17 +109,13 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 		}
 	}
 
-	/**
-	 * Координирует процесс поиска: сначала поиск, затем выбор из результатов
-	 */
+	// Coordinates search process: search then select from results
 	async searchMovieShow(): Promise<MovieShow> {
 		const searchedItems = await this.openSearchModal();
 		return await this.openSuggestModal(searchedItems);
 	}
 
-	/**
-	 * Открывает модальное окно поиска и возвращает найденные элементы
-	 */
+	// Opens search modal and returns found items
 	async openSearchModal(): Promise<KinopoiskSuggestItem[]> {
 		return new Promise((resolve, reject) => {
 			return new SearchModal(this, (error, results) => {
@@ -148,9 +124,7 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 		});
 	}
 
-	/**
-	 * Открывает модальное окно выбора и возвращает детальную информацию о выбранном элементе
-	 */
+	// Opens suggestion modal and returns detailed info about selected item
 	async openSuggestModal(items: KinopoiskSuggestItem[]): Promise<MovieShow> {
 		return new Promise((resolve, reject) => {
 			return new ItemsSuggestModal(this, items, (error, selectedItem) => {
@@ -159,9 +133,7 @@ export default class ObsidianKinopoiskPlugin extends Plugin {
 		});
 	}
 
-	/**
-	 * Загружает содержимое шаблона и заполняет его данными фильма/сериала
-	 */
+	// Loads template content and fills it with movie/series data
 	async getRenderedContents(movieShow: MovieShow) {
 		const { movieTemplateFile, seriesTemplateFile } = this.settings;
 		const templateFile = movieShow.isSeries
