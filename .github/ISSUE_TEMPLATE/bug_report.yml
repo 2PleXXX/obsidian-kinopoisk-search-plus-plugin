@@ -10,6 +10,10 @@ body:
           value: |
               Thanks for reporting a bug! Please fill out this template to help us fix it quickly.
 
+              💡 **How to find versions:**
+              - **Plugin version**: Settings → Community plugins → find your plugin
+              - **Obsidian version**: Settings → About → App version
+
     - type: textarea
       id: description
       attributes:
@@ -23,6 +27,7 @@ body:
       id: obsidian-version
       attributes:
           label: 📱 Obsidian Version
+          description: "If your version is not listed, select 'Other' and specify in the field below"
           options:
               - v1.8.10 (latest)
               - v1.8.9
@@ -34,27 +39,34 @@ body:
               - v1.7.5
               - v1.7.4
               - v1.6.7
-              - Other (specify in additional info)
+              - Other version (specify below)
       validations:
           required: true
+
+    - type: input
+      id: obsidian-version-other
+      attributes:
+          label: 🔧 Other Obsidian Version
+          description: "Only fill this if you selected 'Other version' above. Use format: v1.2.3 or 1.2.3"
+          placeholder: "Example: v1.8.11 or 1.8.11"
 
     - type: dropdown
       id: plugin-version
       attributes:
           label: 🔌 Plugin Version
-          description: Check your installed version in Settings > Community plugins
+          description: "Check in Settings → Community plugins. If not listed, select 'Other' and specify below"
           options:
               - v0.1.0 (latest)
-              - Custom/Other (specify below)
+              - Other version (specify below)
       validations:
           required: true
 
     - type: input
-      id: custom-plugin-version
+      id: plugin-version-other
       attributes:
-          label: 🔧 Custom Plugin Version (if selected above)
-          description: Only fill if you selected "Custom/Other" above
-          placeholder: "v0.0.9, main branch, etc."
+          label: 🔧 Other Plugin Version
+          description: "Only fill this if you selected 'Other version' above. Use format: v0.1.2 or 0.1.2"
+          placeholder: "Example: v0.1.1 or 0.1.1"
 
     - type: dropdown
       id: os
