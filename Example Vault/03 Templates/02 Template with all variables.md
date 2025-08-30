@@ -9,9 +9,9 @@
 Постер (URL): [{{posterUrl}}]
 Обложка (URL): [{{coverUrl}}]
 Логотип (URL): [{{logoUrl}}]
-Постер (Markdown): [{{posterImageLink}}]
-Обложка (Markdown): [{{coverImageLink}}]
-Логотип (Markdown): [{{logoImageLink}}]
+Постер (Markdown): [{{posterMarkdown}}]
+Обложка (Markdown): [{{coverMarkdown}}]
+Логотип (Markdown): [{{logoMarkdown}}]
 
 Жанры: [{{genres}}]
 Жанры (ссылки): [{{genresLinks}}]
@@ -125,13 +125,22 @@ MPAA: [{{ratingMpaa}}]
 {{logoUrl}}
 
 ## Постер (Markdown)
-{{posterImageLink}}
+{{posterMarkdown}}
 
 ## Обложка (Markdown)
-{{coverImageLink}}
+{{coverMarkdown}}
 
 ## Логотип (Markdown)
-{{logoImageLink}}
+{{logoMarkdown}}
+
+## Постер (Path)
+![[{{posterPath}}|350]]
+
+## Обложка (Path)
+![[{{coverPath}}|600]]
+
+## Логотип (Path)
+![[{{logoPath}}|100]]
 
 # 🎭 Классификация
 

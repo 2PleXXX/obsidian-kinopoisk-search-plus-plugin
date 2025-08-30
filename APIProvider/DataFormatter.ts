@@ -98,9 +98,14 @@ export class DataFormatter {
 			),
 
 			// Ready-to-use image links for Obsidian
-			posterImageLink: this.createImageLink(fullInfo.poster?.url || ""),
-			coverImageLink: this.createImageLink(fullInfo.backdrop?.url || ""),
-			logoImageLink: this.createImageLink(fullInfo.logo?.url || ""),
+			posterMarkdown: this.createImageLink(fullInfo.poster?.url || ""),
+			coverMarkdown: this.createImageLink(fullInfo.backdrop?.url || ""),
+			logoMarkdown: this.createImageLink(fullInfo.logo?.url || ""),
+
+			// Clean image paths for template sizing (filled by processImages())
+			posterPath: [],
+			coverPath: [],
+			logoPath: [],
 
 			// Classification
 			genres: this.formatArray(

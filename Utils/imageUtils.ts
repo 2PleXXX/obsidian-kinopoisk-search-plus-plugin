@@ -89,6 +89,23 @@ function createImageFileName(
 }
 
 /**
+ * Extracts clean path from URL or file path for template usage
+ * Returns filename only (without path) for both local and web images
+ */
+function extractCleanPath(imagePath: string): string {
+	if (!imagePath || imagePath.trim() === "") return "";
+
+	// For local paths, extract filename only
+	if (!imagePath.startsWith("http")) {
+		return imagePath.split("/").pop() || imagePath;
+	}
+
+	// For web URLs, return the full URL as-is
+	// User will need to download images locally to use wiki-link sizing
+	return imagePath;
+}
+
+/**
  * Checks if error is a network-related issue
  */
 function isNetworkError(error: unknown): boolean {
@@ -407,8 +424,9 @@ export async function processImages(
 						"poster",
 						settings.imagesFolder
 					);
-					updatedMovieShow.posterImageLink =
+					updatedMovieShow.posterMarkdown =
 						createImageLink(localPath);
+					updatedMovieShow.posterPath = [extractCleanPath(localPath)];
 					processedImages++;
 					successfulDownloads++;
 				} catch (error) {
@@ -424,12 +442,14 @@ export async function processImages(
 						);
 					}
 					// Keep original URL if download failed
-					updatedMovieShow.posterImageLink =
+					updatedMovieShow.posterMarkdown =
 						createImageLink(posterUrl);
+					updatedMovieShow.posterPath = [extractCleanPath(posterUrl)];
 				}
 			} else {
 				// Already local file, create link
-				updatedMovieShow.posterImageLink = createImageLink(posterUrl);
+				updatedMovieShow.posterMarkdown = createImageLink(posterUrl);
+				updatedMovieShow.posterPath = [extractCleanPath(posterUrl)];
 			}
 		}
 
@@ -457,8 +477,8 @@ export async function processImages(
 						"cover",
 						settings.imagesFolder
 					);
-					updatedMovieShow.coverImageLink =
-						createImageLink(localPath);
+					updatedMovieShow.coverMarkdown = createImageLink(localPath);
+					updatedMovieShow.coverPath = [extractCleanPath(localPath)];
 					processedImages++;
 					successfulDownloads++;
 				} catch (error) {
@@ -473,10 +493,12 @@ export async function processImages(
 							`${t("images.downloadError")} ${t("images.cover")}`
 						);
 					}
-					updatedMovieShow.coverImageLink = createImageLink(coverUrl);
+					updatedMovieShow.coverMarkdown = createImageLink(coverUrl);
+					updatedMovieShow.coverPath = [extractCleanPath(coverUrl)];
 				}
 			} else {
-				updatedMovieShow.coverImageLink = createImageLink(coverUrl);
+				updatedMovieShow.coverMarkdown = createImageLink(coverUrl);
+				updatedMovieShow.coverPath = [extractCleanPath(coverUrl)];
 			}
 		}
 
@@ -504,7 +526,8 @@ export async function processImages(
 						"logo",
 						settings.imagesFolder
 					);
-					updatedMovieShow.logoImageLink = createImageLink(localPath);
+					updatedMovieShow.logoMarkdown = createImageLink(localPath);
+					updatedMovieShow.logoPath = [extractCleanPath(localPath)];
 					processedImages++;
 					successfulDownloads++;
 				} catch (error) {
@@ -519,10 +542,12 @@ export async function processImages(
 							`${t("images.downloadError")} ${t("images.logo")}`
 						);
 					}
-					updatedMovieShow.logoImageLink = createImageLink(logoUrl);
+					updatedMovieShow.logoMarkdown = createImageLink(logoUrl);
+					updatedMovieShow.logoPath = [extractCleanPath(logoUrl)];
 				}
 			} else {
-				updatedMovieShow.logoImageLink = createImageLink(logoUrl);
+				updatedMovieShow.logoMarkdown = createImageLink(logoUrl);
+				updatedMovieShow.logoPath = [extractCleanPath(logoUrl)];
 			}
 		}
 

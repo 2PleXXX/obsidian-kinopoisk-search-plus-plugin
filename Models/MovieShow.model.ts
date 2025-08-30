@@ -23,9 +23,14 @@ export interface MovieShow {
 	logoUrl: string[];
 
 	// Obsidian-formatted image links - auto-formatted as ![[path]] or ![](path)
-	posterImageLink: string[];
-	coverImageLink: string[];
-	logoImageLink: string[];
+	posterMarkdown: string[];
+	coverMarkdown: string[];
+	logoMarkdown: string[];
+
+	// Clean image paths - filename only for template sizing: ![350]({{posterPath}})
+	posterPath: string[];
+	coverPath: string[];
+	logoPath: string[];
 
 	// Classification
 	genres: string[];

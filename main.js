@@ -751,9 +751,13 @@ var DataFormatter = class {
         "url" /* URL */
       ),
       // Ready-to-use image links for Obsidian
-      posterImageLink: this.createImageLink(((_e = fullInfo.poster) == null ? void 0 : _e.url) || ""),
-      coverImageLink: this.createImageLink(((_f = fullInfo.backdrop) == null ? void 0 : _f.url) || ""),
-      logoImageLink: this.createImageLink(((_g = fullInfo.logo) == null ? void 0 : _g.url) || ""),
+      posterMarkdown: this.createImageLink(((_e = fullInfo.poster) == null ? void 0 : _e.url) || ""),
+      coverMarkdown: this.createImageLink(((_f = fullInfo.backdrop) == null ? void 0 : _f.url) || ""),
+      logoMarkdown: this.createImageLink(((_g = fullInfo.logo) == null ? void 0 : _g.url) || ""),
+      // Clean image paths for template sizing (filled by processImages())
+      posterPath: [],
+      coverPath: [],
+      logoPath: [],
       // Classification
       genres: this.formatArray(
         fullInfo.genres.map((g) => capitalizeFirstLetter(g.name)),
@@ -1459,6 +1463,13 @@ function createImageFileName(movieShow, imageType, extension) {
   const cleanedBaseName = replaceIllegalFileNameCharactersInString(baseName);
   return `${cleanedBaseName}.${extension}`;
 }
+function extractCleanPath(imagePath) {
+  if (!imagePath || imagePath.trim() === "") return "";
+  if (!imagePath.startsWith("http")) {
+    return imagePath.split("/").pop() || imagePath;
+  }
+  return imagePath;
+}
 function isNetworkError(error) {
   if (!error || typeof error !== "object" || typeof error.message !== "string") {
     return false;
@@ -1649,7 +1660,8 @@ async function processImages(app, movieShow, settings, progressCallback) {
             "poster",
             settings.imagesFolder
           );
-          updatedMovieShow.posterImageLink = createImageLink(localPath);
+          updatedMovieShow.posterMarkdown = createImageLink(localPath);
+          updatedMovieShow.posterPath = [extractCleanPath(localPath)];
           processedImages++;
           successfulDownloads++;
         } catch (error) {
@@ -1663,10 +1675,12 @@ async function processImages(app, movieShow, settings, progressCallback) {
               `${t("images.downloadError")} ${t("images.poster")}`
             );
           }
-          updatedMovieShow.posterImageLink = createImageLink(posterUrl);
+          updatedMovieShow.posterMarkdown = createImageLink(posterUrl);
+          updatedMovieShow.posterPath = [extractCleanPath(posterUrl)];
         }
       } else {
-        updatedMovieShow.posterImageLink = createImageLink(posterUrl);
+        updatedMovieShow.posterMarkdown = createImageLink(posterUrl);
+        updatedMovieShow.posterPath = [extractCleanPath(posterUrl)];
       }
     }
     if (settings.saveCoverImage && movieShow.coverUrl.length > 0 && movieShow.coverUrl[0]) {
@@ -1686,7 +1700,8 @@ async function processImages(app, movieShow, settings, progressCallback) {
             "cover",
             settings.imagesFolder
           );
-          updatedMovieShow.coverImageLink = createImageLink(localPath);
+          updatedMovieShow.coverMarkdown = createImageLink(localPath);
+          updatedMovieShow.coverPath = [extractCleanPath(localPath)];
           processedImages++;
           successfulDownloads++;
         } catch (error) {
@@ -1700,10 +1715,12 @@ async function processImages(app, movieShow, settings, progressCallback) {
               `${t("images.downloadError")} ${t("images.cover")}`
             );
           }
-          updatedMovieShow.coverImageLink = createImageLink(coverUrl);
+          updatedMovieShow.coverMarkdown = createImageLink(coverUrl);
+          updatedMovieShow.coverPath = [extractCleanPath(coverUrl)];
         }
       } else {
-        updatedMovieShow.coverImageLink = createImageLink(coverUrl);
+        updatedMovieShow.coverMarkdown = createImageLink(coverUrl);
+        updatedMovieShow.coverPath = [extractCleanPath(coverUrl)];
       }
     }
     if (settings.saveLogoImage && movieShow.logoUrl.length > 0 && movieShow.logoUrl[0]) {
@@ -1723,7 +1740,8 @@ async function processImages(app, movieShow, settings, progressCallback) {
             "logo",
             settings.imagesFolder
           );
-          updatedMovieShow.logoImageLink = createImageLink(localPath);
+          updatedMovieShow.logoMarkdown = createImageLink(localPath);
+          updatedMovieShow.logoPath = [extractCleanPath(localPath)];
           processedImages++;
           successfulDownloads++;
         } catch (error) {
@@ -1737,10 +1755,12 @@ async function processImages(app, movieShow, settings, progressCallback) {
               `${t("images.downloadError")} ${t("images.logo")}`
             );
           }
-          updatedMovieShow.logoImageLink = createImageLink(logoUrl);
+          updatedMovieShow.logoMarkdown = createImageLink(logoUrl);
+          updatedMovieShow.logoPath = [extractCleanPath(logoUrl)];
         }
       } else {
-        updatedMovieShow.logoImageLink = createImageLink(logoUrl);
+        updatedMovieShow.logoMarkdown = createImageLink(logoUrl);
+        updatedMovieShow.logoPath = [extractCleanPath(logoUrl)];
       }
     }
     if (progressCallback) {

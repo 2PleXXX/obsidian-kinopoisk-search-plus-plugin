@@ -1,5 +1,9 @@
 # **English** | **[Русский](README_RU.md)**
 
+# ⚠️ Breaking Changes Notice
+
+**Version 2.0.0 introduces breaking changes.** Please review the [CHANGELOG (v2.0.0)](CHANGELOG.md#200--2025-08-xx) before updating.
+
 # Credits
 
 Based on the original work by [Alintor](https://github.com/Alintor)
@@ -100,30 +104,57 @@ You can set a custom template file location to format your movie notes.
 
 Please refer to the template variables definitions below for available variables (see: [Template variables definitions](#template-variables-definitions)).
 
+Here’s an example of the template I personally use:
+
 ```
 ---
-title: {{name}}
-year: {{year}}
-poster: {{posterUrl}}
-genres: [{{genres}}]
-rating: {{ratingKp}}
-director: [{{director}}]
+Movie_Poster: {{posterMarkdown}}
+Movie_Title: {{alternativeName}}
+Movie_Alias: {{name}}
+Movie_Type: [{{type}}]
+Movie_Universe:
+Movie_ReleaseYear: {{year}}
+Movie_Genre: [{{genres}}]
+Movie_SeasonsCount: {{seasonsCount}}
+Movie_AvgEpisodesPerSeason: {{seriesInSeasonCount}}
+Movie_Duration: {{movieLength}} {{seriesLength}}
+Movie_ProductionStatus:
+Movie_Country: [{{countries}}]
+Movie_Cast: [{{actors}}]
+Movie_Studio: [{{productionCompanies}}]
+Movie_Director: [{{director}}]
+Movie_Trailer:
+Movie_Link: [{{kinopoiskUrl}}]
+Movie_Rating:
+Movie_Favorites:
+Movie_WatchStatus:
+Movie_LastEdited:
+Movie_NeedsFormatting:
 ---
 
-# {{name}} ({{year}})
+# Plot Description
 
-Жанры: {{genres}}
-Режиссёр: {{director}}
-Рейтинг: {{ratingKp}}/10
+![[{{posterPath}}|350]]
 
-![|300]({{posterUrl}})
-
-## Описание
 {{description}}
 
-## Интересные факты
-{{facts}}
+---
+## Sequels and Prequels
+
+{{sequelsAndPrequels}}
+
+---
+### My Opinion
+
+
+
+---
+#### Linked to [[0. MOC - Cinema]]
 ```
+
+Note that in the `Movie_Duration` field I use two variables at the same time.
+Even though Obsidian will show you an error, the plugin will still work with this approach.
+So feel free to try using multiple variables in a single field.
 
 ### ⚠️ Important Template Editing Warning
 
@@ -146,7 +177,7 @@ Please find here a definition of the possible variables to be used in your templ
 
 ## 🖼️ Images
 
-> ⚠️ **Important:** Distinguish between URL variables (direct links) and ImageLink variables (ready markdown links)
+> ⚠️ **Important:** Distinguish between URL variables (direct links), ImageLink variables (ready markdown links), and Path variables (for custom sizing)
 
 ### URL variables (direct links)
 
@@ -158,15 +189,25 @@ Contain only image URLs without markdown formatting. Always contain web links, e
 | `{{coverUrl}}`  | Direct link to cover (wide image) | URL  | ✅   | `https://image.tmdb.org/cover.jpg`  |
 | `{{logoUrl}}`   | Direct link to film logo          | URL  | ✅   | `https://image.tmdb.org/logo.png`   |
 
-### ImageLink variables (ready markdown links)
+### Markdown variables (ready markdown links)
 
 Contain ready markdown links for displaying images in Obsidian. Use local file references when images are downloaded, web links otherwise.
 
-| Variable              | Description                   | Type     | List | Example                                 |
-| --------------------- | ----------------------------- | -------- | ---- | --------------------------------------- |
-| `{{posterImageLink}}` | Ready markdown link to poster | Markdown | ✅   | `![[poster.jpg]]`                       |
-| `{{coverImageLink}}`  | Ready markdown link to cover  | Markdown | ✅   | `![](https://image.tmdb.org/cover.jpg)` |
-| `{{logoImageLink}}`   | Ready markdown link to logo   | Markdown | ✅   | `![[logo.png]]`                         |
+| Variable             | Description                   | Type     | List | Example                                 |
+| -------------------- | ----------------------------- | -------- | ---- | --------------------------------------- |
+| `{{posterMarkdown}}` | Ready markdown link to poster | Markdown | ✅   | `![[poster.jpg]]`                       |
+| `{{coverMarkdown}}`  | Ready markdown link to cover  | Markdown | ✅   | `![](https://image.tmdb.org/cover.jpg)` |
+| `{{logoMarkdown}}`   | Ready markdown link to logo   | Markdown | ✅   | `![[logo.png]]`                         |
+
+### Path variables (for custom sizing)
+
+Contain clean file paths or URLs for use in custom markdown constructions, especially for resizing images with `![[file|size]]` syntax.
+
+| Variable         | Description                    | Type | List | Example      | Usage Example              |
+| ---------------- | ------------------------------ | ---- | ---- | ------------ | -------------------------- |
+| `{{posterPath}}` | Clean path/filename for poster | Path | ✅   | `poster.jpg` | `![[{{posterPath}}\|350]]` |
+| `{{coverPath}}`  | Clean path/filename for cover  | Path | ✅   | `cover.jpg`  | `![[{{coverPath}}\|200]]`  |
+| `{{logoPath}}`   | Clean path/filename for logo   | Path | ✅   | `logo.png`   | `![[{{logoPath}}\|100]]`   |
 
 ### Key Differences
 
@@ -174,6 +215,11 @@ Contain ready markdown links for displaying images in Obsidian. Use local file r
 -   **ImageLink variables**:
     -   For downloaded images: Use wiki-links `![[filename.jpg]]` (portable, work after file moves)
     -   For web images: Use markdown links `![](https://...)` (fallback when download fails)
+-   **Path variables**:
+    -   For downloaded images: Contain filename only for custom wiki-link constructions
+    -   For web images: Contain full URL (limited functionality with sizing)
+
+> 📝 **Note:** Path variables enable custom sizing with `![[file|size]]` syntax, which works only with local files in Obsidian.
 
 ## 🎭 Classification
 
@@ -380,7 +426,7 @@ You can download the example vault from the repository and open it locally. The 
 **Option 2:** Download the vault archive directly
 
 -   [Clone Repository](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin)
--   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/v1.0.0/Example.Vault.rar)
+-   [Download Example Vault Archive](https://github.com/2PleXXX/obsidian-kinopoisk-search-plus-plugin/releases/download/2.0.0/Example.Vault.rar)
 
 # License
 
